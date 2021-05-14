@@ -30,6 +30,10 @@
 #include "RM_Cilent_UI.h"
 #include "string.h"
 #include "math.h"
+
+#define ALTO			//显示雷达ui
+//#define SHOOT					//显示发射准星ui  //ui待修正
+
 #define PI acos(-1)
 /**
   * @brief          single byte upacked 
@@ -77,88 +81,83 @@ void referee_usart_task(void const * argument)
 		//雷达
 		Graph_Data circle;
 		Graph_Data line;
-		
-//		Graph_Data line1;
-//		Graph_Data line2;
-//		Graph_Data line3;
-//		Graph_Data line4;
-//		Graph_Data line5;
+#ifdef SHOOT			
+		Graph_Data line1;
+		Graph_Data line2;
+		Graph_Data line3;
+		Graph_Data line4;
+		Graph_Data line5;
+#endif
 
 		memset(&circle,0,sizeof(circle));
 		memset(&line,0,sizeof(line));
-	
-//		memset(&line1,0,sizeof(line1));
-//		memset(&line2,0,sizeof(line2));
-//		memset(&line3,0,sizeof(line3));
-//		memset(&line4,0,sizeof(line4));
-//		memset(&line5,0,sizeof(line5));
-	
+
+	#ifdef SHOOT	
+		memset(&line1,0,sizeof(line1));
+		memset(&line2,0,sizeof(line2));
+		memset(&line3,0,sizeof(line3));
+		memset(&line4,0,sizeof(line4));
+		memset(&line5,0,sizeof(line5));
+#endif
+
+		
 		Circle_Draw(&circle,"001",UI_Graph_ADD,9,UI_Color_Black,8,960,540,300);
-		Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,8,960,540,1260,540);
-		
-//		Line_Draw(&line1,"003",UI_Graph_ADD,7,UI_Color_Black,4,910,540,1010,540);
-//		Line_Draw(&line2,"004",UI_Graph_ADD,7,UI_Color_Black,4,930,500,990,500);
-//		Line_Draw(&line3,"005",UI_Graph_ADD,7,UI_Color_Black,4,950,460,970,460);
-//		Line_Draw(&line4,"006",UI_Graph_ADD,7,UI_Color_Black,4,960,540,960,440);
-//		Line_Draw(&line5,"007",UI_Graph_ADD,7,UI_Color_Black,4,955,420,950,420);
+//		Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,8,960,540,1260,540);			
+#ifdef SHOOT
+		Line_Draw(&line1,"003",UI_Graph_ADD,7,UI_Color_Black,4,910,540,1010,540);
+		Line_Draw(&line2,"004",UI_Graph_ADD,7,UI_Color_Black,4,930,500,990,500);
+		Line_Draw(&line3,"005",UI_Graph_ADD,7,UI_Color_Black,4,950,460,970,460);
+		Line_Draw(&line4,"006",UI_Graph_ADD,7,UI_Color_Black,4,960,540,960,440);
+		Line_Draw(&line5,"007",UI_Graph_ADD,7,UI_Color_Black,4,955,420,950,420);
 		//瞄准线
-
-
-
+#endif
 		
+		double angle = 0;
 		uint32_t referee_wake_time = osKernelSysTick();
 			
-		double angle = 0;
+
     while(1)
-    {		
-				/*好像有问题
-				static int j = 0;
-				
-				if(j<100){
-					Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,8,960,540,1260,540);
-					//Circle_Draw(&circle,"001",UI_Graph_ADD,9,UI_Color_Black,8,960,540,300);
-					j++;
-				}
-				//确保初始化数据能被收到
-			*/
-				static int  i =  0;
-        
-				
+    {					
 				referee_unpack_fifo_data();
 				get_chassis_power_and_buffer(&chassis_power,&power_buffer);
 				float tmp[]={chassis_power,power_buffer};
 				write_uart(BLUETOOTH_UART,(uint8_t*)&tmp,sizeof(uint8_t)*4*2);
 				uint8_t tail[]={0x00,0x00,0x80,0x7f};
 				write_uart(BLUETOOTH_UART,tail,sizeof(tail));
+				static int  i =  0;
 				i++;
-				
-				if(i ==35){
-					Circle_Draw(&circle,"001",UI_Graph_ADD,9,UI_Color_Black,8,960,540,300);
-					Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,8,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);
-					UI_ReFresh(2,line,circle);
+#ifdef SHOOT				
+				if(i ==10){
+				UI_ReFresh(2,line1,line2);
 				}
-				if(i == 70){
-					if(angle == 360)
+				
+				if(i ==20){		
+					UI_ReFresh(2,line3,line4);					
+				}
+				if(i == 30){
+					UI_ReFresh(1,line5);
+				}
+#endif
+#ifdef ALTO
+				if(i == 15 ){
+					Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,8,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);			
+					UI_ReFresh(2,circle,line);
+				}
+					if(i == 30){
+						if(angle == 360)
 						{
 							angle = 0;
 						}
-					angle++;
-					
+					angle++;						
+//					
 					Line_Draw(&line,"002",UI_Graph_Change,8,UI_Color_Black,8,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);			
-					//sin()、cos()的参数是弧度，角度转弧度
-						
-//					Line_Draw(&line1,"003",UI_Graph_ADD,7,UI_Color_Black,4,910,540,1010,540);
-//					Line_Draw(&line2,"004",UI_Graph_ADD,7,UI_Color_Black,4,930,500,990,500);
-//					Line_Draw(&line3,"005",UI_Graph_ADD,7,UI_Color_Black,4,950,460,970,460);
-//					Line_Draw(&line4,"006",UI_Graph_ADD,7,UI_Color_Black,4,960,540,960,440);
-//					Line_Draw(&line5,"007",UI_Graph_ADD,7,UI_Color_Black,4,955,420,950,420);
-//					UI_ReFresh(7,line,circle,line1,line2,line3,line4,line5);
-						UI_ReFresh(1,line);
-//						UI_ReFresh(5,line1,line2,line3,line4,line5);
+//					//sin()、cos()的参数是弧度，角度转弧度
+					UI_ReFresh(1,line);
 					//更新线的位置
-					i = 0;
 				}
-				//通过这个if调整发送ui数据的频率，i = 10则每10*10ms发一次
+#endif
+				if(i == 40) i=0;
+				//通过if调整发送ui数据的频率
 				
 				osDelayUntil(&referee_wake_time, 10);
     }

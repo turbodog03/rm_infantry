@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\rm_infantry\rm_infantry.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\rm_infantry\rm_infantry.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Fri May 14 00:01:50 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sat May 15 00:01:27 2021
 <BR><P>
 <H3>Maximum Stack Usage =        312 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1234,8 +1234,8 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[de]"></a>HAL_UART_ErrorCallback</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f4xx_hal_uart.o(i.HAL_UART_ErrorCallback))
-<BR><BR>[Called By]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_DMAAbortOnError
-<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_IRQHandler
+<BR><BR>[Called By]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_IRQHandler
+<LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_DMAAbortOnError
 </UL>
 
 <P><STRONG><a name="[da]"></a>HAL_UART_IRQHandler</STRONG> (Thumb, 326 bytes, Stack size 32 bytes, stm32f4xx_hal_uart.o(i.HAL_UART_IRQHandler))
@@ -1290,7 +1290,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 <LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Called By]<UL><LI><a href="#[179]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write_uart
+<BR>[Called By]<UL><LI><a href="#[178]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write_uart
 <LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UI_SendByte
 </UL>
 
@@ -1301,7 +1301,7 @@ Global Symbols
 <P><STRONG><a name="[8]"></a>HardFault_Handler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f4xx_it.o(i.HardFault_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f427xx.o(RESET)
 </UL>
-<P><STRONG><a name="[177]"></a>Line_Draw</STRONG> (Thumb, 148 bytes, Stack size 36 bytes, rm_cilent_ui.o(i.Line_Draw))
+<P><STRONG><a name="[17a]"></a>Line_Draw</STRONG> (Thumb, 148 bytes, Stack size 36 bytes, rm_cilent_ui.o(i.Line_Draw))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = Line_Draw
 </UL>
 <BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;referee_usart_task
@@ -1990,7 +1990,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[171]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;verify_CRC8_check_sum
 </UL>
 
-<P><STRONG><a name="[178]"></a>get_chassis_power_and_buffer</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, referee.o(i.get_chassis_power_and_buffer))
+<P><STRONG><a name="[177]"></a>get_chassis_power_and_buffer</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, referee.o(i.get_chassis_power_and_buffer))
 <BR><BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;referee_usart_task
 </UL>
 
@@ -2206,25 +2206,25 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[170]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;referee_unpack_fifo_data
 </UL>
 
-<P><STRONG><a name="[71]"></a>referee_usart_task</STRONG> (Thumb, 924 bytes, Stack size 128 bytes, referee_usart_task.o(i.referee_usart_task))
+<P><STRONG><a name="[71]"></a>referee_usart_task</STRONG> (Thumb, 854 bytes, Stack size 128 bytes, referee_usart_task.o(i.referee_usart_task))
 <BR><BR>[Stack]<UL><LI>Max Depth = 312<LI>Call Chain = referee_usart_task &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_d2iz
 </UL>
-<BR>[Calls]<UL><LI><a href="#[179]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write_uart
+<BR>[Calls]<UL><LI><a href="#[178]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;write_uart
 <LI><a href="#[153]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osKernelSysTick
 <LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelayUntil
 <LI><a href="#[175]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart6_init
 <LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_referee_struct_data
-<LI><a href="#[178]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_chassis_power_and_buffer
+<LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_chassis_power_and_buffer
 <LI><a href="#[174]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fifo_s_init
 <LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UI_ReFresh
-<LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Line_Draw
+<LI><a href="#[17a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Line_Draw
 <LI><a href="#[176]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Circle_Draw
 <LI><a href="#[170]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;referee_unpack_fifo_data
 <LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
 <LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
 <LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_acos
 <LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[17a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2uiz
+<LI><a href="#[179]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2uiz
 <LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdcmpeq
 <LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 <LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
@@ -2424,7 +2424,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_setup
 </UL>
 
-<P><STRONG><a name="[179]"></a>write_uart</STRONG> (Thumb, 70 bytes, Stack size 24 bytes, bsp_uart.o(i.write_uart))
+<P><STRONG><a name="[178]"></a>write_uart</STRONG> (Thumb, 70 bytes, Stack size 24 bytes, bsp_uart.o(i.write_uart))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = write_uart &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
@@ -2600,7 +2600,7 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
 </UL>
 
-<P><STRONG><a name="[17a]"></a>__aeabi_d2uiz</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, dfixu.o(x$fpl$dfixu))
+<P><STRONG><a name="[179]"></a>__aeabi_d2uiz</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, dfixu.o(x$fpl$dfixu))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_d2uiz
 </UL>
 <BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;referee_usart_task
