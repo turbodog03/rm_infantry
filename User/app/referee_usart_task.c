@@ -31,7 +31,7 @@
 #include "string.h"
 #include "math.h"
 
-#define ALTO			//显示雷达ui
+#define AUTO			//显示雷达ui
 //#define SHOOT					//显示发射准星ui  //ui待修正
 
 #define PI acos(-1)
@@ -138,7 +138,7 @@ void referee_usart_task(void const * argument)
 					UI_ReFresh(1,line5);
 				}
 #endif
-#ifdef ALTO
+#ifdef AUTO
 				if(i == 15 ){
 					Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,8,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);			
 					UI_ReFresh(2,circle,line);
