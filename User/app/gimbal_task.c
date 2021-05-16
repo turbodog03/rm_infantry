@@ -53,6 +53,8 @@ gimbal_yaw_t gim;
 imu_t        imu;
 
 char color_flag=0;//0为红色，1为蓝色
+char auto_pid_flag = 0;
+char manual_pid_flag = 1;
 
 uint8_t send_flag=0;
 /* gimbal pid parameter */
@@ -71,7 +73,7 @@ int gimbal_time_ms;
 void gimbal_task(const void* argu)
 {
   //云台和拨弹电机参数初始化
-  gimbal_init_param();
+  gimbal_init_param_manual();
   
   //从flash中读取云台中点位置
   read_gimbal_offset(&pit_center_offset, &yaw_center_offset);
@@ -107,10 +109,20 @@ void gimbal_task(const void* argu)
       //云台闭环控制模式
       case GIMBAL_CLOSE_LOOP_ZGYRO:
       {
+				if(manual_pid_flag == 0){
+					pid_reset_manual();
+					manual_pid_flag = 1;
+					auto_pid_flag = 0;
+				}
         gimbal_loop_handle();
       }break;
       case GIMBAL_AUTO:
 			{
+				if(auto_pid_flag == 0){
+					pid_reset_auto();
+					auto_pid_flag = 1;
+					manual_pid_flag = 0;
+				}
 				gimbal_auto_control();
 //					float frame[2]={yaw_relative_angle,pit_relative_angle};
 //					//发送云台角度数据
@@ -145,6 +157,7 @@ void gimbal_task(const void* argu)
 		write_uart(NUC_UART,(uint8_t*)&data_send,sizeof(data_send));
     //云台任务周期控制 5ms
 		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_4,GPIO_PIN_RESET);
+				
     osDelayUntil(&gimbal_wake_time, GIMBAL_PERIOD);
   }
 }
@@ -463,4 +476,66 @@ void gimbal_init_param(void)
 }
 
 
+void gimbal_init_param_manual(void)
+{
+  //电调 bug
+  osDelay(3000);
+  
+  /* 云台pitch轴电机PID参数初始化 */
+  pid_init(&pid_pit, 3000, 600,
+                  90.0, 1.8, 400.000); //
+  pid_init(&pid_pit_speed, 8000,2000,
+                  10, 0.01, 0.5);
+
+  /* 云台yaw轴电机PID参数初始化 */
+  pid_init(&pid_yaw, 4000, 50,
+                  30, 1.5, 10.0); //
+  pid_init(&pid_yaw_speed, 8000, 3000,
+                  100, 0.01, 40.0);
+	pid_init(&pid_yaw_auto,180,170,0.08,0.15,0.0);
+	
+	pid_init(&pid_pit_auto,25,23,0.1,0.05,0.0);
+  /* 将云台的初始化状态设置为释放 */
+  gim.ctrl_mode = GIMBAL_RELAX;
+  
+}
+
+void pid_reset_manual(void){
+	  /* 云台pitch轴电机PID参数重置 */
+  pid_reset(&pid_pit,
+                  90.0, 1.8, 400.000); //
+  pid_reset(&pid_pit_speed,
+                  10, 0.01, 0.5);
+	pid_reset(&pid_pit_auto,
+									0.1,0.05,0.0);
+	
+  /* 云台yaw轴电机PID参数重置 */
+  pid_reset(&pid_yaw,
+                  30, 1.5, 10.0); //
+  pid_reset(&pid_yaw_speed,
+                  100, 0.01, 40.0);
+	pid_reset(&pid_yaw_auto,
+									0.08,0.15,0.0);
+	
+
+  /* 将云台的初始化状态设置为释放 */
+}
+
+void pid_reset_auto(void){
+		  /* 云台pitch轴电机PID参数重置 */
+  pid_reset(&pid_pit,
+                  90.0, 1.8, 400.000); //
+  pid_reset(&pid_pit_speed,
+                  10, 0.01, 0.5);
+	pid_reset(&pid_pit_auto,
+									0.1,0.05,0.0);
+	
+  /* 云台yaw轴电机PID参数重置 */
+  pid_reset(&pid_yaw,
+                  30, 1.5, 10.0); //
+  pid_reset(&pid_yaw_speed,
+                  100, 0.01, 40.0);
+	pid_reset(&pid_yaw_auto,
+									0.08,0.15,0.0);
+}
 

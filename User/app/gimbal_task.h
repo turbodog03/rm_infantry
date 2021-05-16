@@ -156,10 +156,23 @@ static void gimbal_init_param(void);
 /**
   * @brief     云台回中初始化模式处理函数
   */
+static void gimbal_init_param_manual(void);
+/**
+  * @brief     云台回中手动初始化模式处理函数
+  */
+static void pid_reset_manual(void);
+/**
+  * @brief     云台切换手动瞄准模式pid重置函数
+  */
+static void pid_reset_auto(void);
+/**
+  * @brief     云台切换自动瞄准模式pid重置函数
+  */
 static void gimbal_init_handle(void);
 /**
   * @brief     云台无控制信号输入模式处理函数
   */
+
 static void gimbal_noaction_handle(void);
 /**
   * @brief     云台跟随编码器闭环控制处理函数

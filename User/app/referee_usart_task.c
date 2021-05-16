@@ -31,8 +31,11 @@
 #include "string.h"
 #include "math.h"
 
-#define AUTO			//显示雷达ui
-//#define SHOOT					//显示发射准星ui  //ui待修正
+#include "pid.h"
+#include "servo_task.h"
+#define DEBUG
+//#define AUTO			//显示雷达ui
+#define SHOOT					//显示发射准星ui  //ui待修正
 
 #define PI acos(-1)
 /**
@@ -48,7 +51,7 @@
 
 static void referee_unpack_fifo_data(void);
 
- 
+#ifndef DEBUG
 extern UART_HandleTypeDef huart6;
 
 uint8_t usart6_buf[2][USART_RX_BUF_LENGHT];
@@ -56,7 +59,7 @@ uint8_t usart6_buf[2][USART_RX_BUF_LENGHT];
 fifo_s_t referee_fifo;
 uint8_t referee_fifo_buf[REFEREE_FIFO_BUF_LENGTH];
 unpack_data_t referee_unpack_obj;
-
+#endif
 
 float power_buffer;//底盘功率缓冲值
 float chassis_power; //底盘实时功率
@@ -74,10 +77,11 @@ float chassis_power; //底盘实时功率
   */
 void referee_usart_task(void const * argument)
 {
-	
+#ifndef DEBUG
     init_referee_struct_data();
     fifo_s_init(&referee_fifo, referee_fifo_buf, REFEREE_FIFO_BUF_LENGTH);
     usart6_init(usart6_buf[0], usart6_buf[1], USART_RX_BUF_LENGHT);
+#endif
 		//雷达
 		Graph_Data circle;
 		Graph_Data line;
@@ -118,12 +122,14 @@ void referee_usart_task(void const * argument)
 
     while(1)
     {					
+#ifndef DEBUG
 				referee_unpack_fifo_data();
 				get_chassis_power_and_buffer(&chassis_power,&power_buffer);
 				float tmp[]={chassis_power,power_buffer};
 				write_uart(BLUETOOTH_UART,(uint8_t*)&tmp,sizeof(uint8_t)*4*2);
 				uint8_t tail[]={0x00,0x00,0x80,0x7f};
 				write_uart(BLUETOOTH_UART,tail,sizeof(tail));
+#endif
 				static int  i =  0;
 				i++;
 #ifdef SHOOT				
@@ -156,14 +162,27 @@ void referee_usart_task(void const * argument)
 					//更新线的位置
 				}
 #endif
-				if(i == 40) i=0;
+				if(i == 40) 
+				{	
+
+				i=0;
+				}
 				//通过if调整发送ui数据的频率
+				//float a[8] = {pid_pit_speed.p,pid_pit_speed.i,pid_pit_speed.d,pid_pit.p,pid_pit.i,pid_pit.d,pit_angle_ref,pit_angle_fdb};
+				float a[5] = {pid_pit_speed.p,pid_pit_speed.i,pid_pit_speed.d,pit_angle_ref,pit_angle_fdb};				
+				write_uart(BLUETOOTH_UART,(uint8_t*)a,sizeof(a));
+				
+//				float b[3] = {pid_pit.p,pid_pit.i,pid_pit.d};
+//				write_uart(BLUETOOTH_UART,(uint8_t*)b,sizeof(b));
+				
+				uint8_t tail[]={0x00,0x00,0x80,0x7f};
+				write_uart(BLUETOOTH_UART,tail,sizeof(tail));
 				
 				osDelayUntil(&referee_wake_time, 10);
     }
 }
 
-
+#ifndef DEBUG
 /**
   * @brief          single byte upacked 
   * @param[in]      void
@@ -270,6 +289,7 @@ void referee_unpack_fifo_data(void)
     }
   }
 }
+
 void USART6_IRQHandler(void)
 {
     static volatile uint8_t res;
@@ -301,5 +321,5 @@ void USART6_IRQHandler(void)
         }
     }
 }
-
+#endif
 

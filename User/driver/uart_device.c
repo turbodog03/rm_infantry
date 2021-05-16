@@ -51,7 +51,7 @@ rc_type_t rc;
 uint8_t   dbus_recv[DBUS_FRAME_SIZE];
 uint8_t		nuc_recv[NUC_FRAME_SIZE];
 uint8_t		referee_recv[REFEREE_FRAME_SIZE];
-uint8_t		bluetooth_recv[8];
+uint8_t		bluetooth_recv[BLUETOOTH_FRAME_SIZE];
 //float pc_angle[2]={0.0,0.0};
 float amplitude=50.0f;
 /**
@@ -99,30 +99,32 @@ void bluetooth_uart_callback(void)
 {
 	float value=0.0f;
 	char type=0;
+	
 	bluetooth_recv[BLUETOOTH_FRAME_SIZE-1]='\n';
 	sscanf((const char *)bluetooth_recv,"%c%f",&type,&value);
 	switch(type)
 	{
-		case 'A':
-			amplitude=value;
+//		case 'A':
+//			amplitude=value;
 		case 'p':
-			pid_chassis_angle.p=value;
+			pid_pit.p=value;
 			break;
 		case 'i':
-			pid_chassis_angle.i=value;
+			pid_pit.i=value;
 			break;
 		case 'd':
-			pid_chassis_angle.d=value;
+			pid_pit.d=value;
 			break;
-//		case 'P':
-//			pid_yaw_speed.p=value;
-//			break;
-//		case 'I':
-//			pid_yaw_speed.i=value;
-//			break;
-//		case 'D':
-//			pid_yaw_speed.d=value;
-//			break;
+		case 'P':
+			pid_pit_speed.p=value;
+			break;
+		case 'I':
+			pid_pit_speed.i=value;
+			break;
+		case 'D':
+			pid_pit_speed.d=value;
+			break;
+//大写字母调内环，小写字母调外环
 	}
 	//memcpy(nmb,bluetooth_recv,sizeof(nmb));
 	//if (glb_cali_data.gimbal_cali_data.calied_flag != CALIED_FLAG)

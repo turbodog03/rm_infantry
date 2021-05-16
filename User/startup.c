@@ -81,8 +81,8 @@ void init_setup(void)
 	//注册遥控器接收数据回调函数
   uart_recv_callback_register(DBUS_UART, dbus_uart_callback);
 	uart_recv_callback_register(NUC_UART, nuc_uart_callback);
-	//uart_recv_callback_register(BLUETOOTH_UART, bluetooth_uart_callback);
-	//uart_recv_callback_register(REFEREE_UART,referee_uart_callback);
+	uart_recv_callback_register(BLUETOOTH_UART, bluetooth_uart_callback);
+//	uart_recv_callback_register(REFEREE_UART,referee_uart_callback);
 	
 	
 //	__HAL_UART_ENABLE_IT(&huart6, UART_IT_IDLE);

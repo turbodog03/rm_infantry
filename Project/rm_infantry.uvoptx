@@ -200,6 +200,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>chassis_total_current</ItemText>
         </Ww>
+        <Ww>
+          <count>8</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>imu.gyro_y</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -231,6 +236,11 @@
           <count>5</count>
           <WinNumber>2</WinNumber>
           <ItemText>glb_cali_data.gimbal_cali_data.pit_offset</ItemText>
+        </Ww>
+        <Ww>
+          <count>6</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>gim.ctrl_mode</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow1>

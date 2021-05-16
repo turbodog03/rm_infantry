@@ -84,6 +84,8 @@ void gimbal_custom_control(void)
 	
   //发送电流到云台电机电调
   send_gimbal_moto_current(yaw_moto_current, pit_moto_current);
+	
+
 }
 //云台自瞄处理
 void gimbal_auto_control()

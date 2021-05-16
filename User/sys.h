@@ -136,7 +136,7 @@
 /* 串口数据相关 */
 #define MAX_DMA_COUNT        	200
 #define DBUS_FRAME_SIZE      	18
-#define BLUETOOTH_FRAME_SIZE  8
+#define BLUETOOTH_FRAME_SIZE  20
 #define NUC_FRAME_SIZE  16
 #define REFEREE_FRAME_SIZE 50
 

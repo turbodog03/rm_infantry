@@ -63,3 +63,6 @@
 .\rm_infantry\referee_usart_task.o: D:\keil v5 core\ARM\ARMCC\Bin\..\include\stdarg.h
 .\rm_infantry\referee_usart_task.o: ..\Inc\usart.h
 .\rm_infantry\referee_usart_task.o: D:\keil v5 core\ARM\ARMCC\Bin\..\include\math.h
+.\rm_infantry\referee_usart_task.o: ..\User\algorithm\pid.h
+.\rm_infantry\referee_usart_task.o: ..\User\app\servo_task.h
+.\rm_infantry\referee_usart_task.o: ..\User\driver\can_device.h
