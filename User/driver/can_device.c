@@ -43,6 +43,8 @@ moto_measure_t moto_chassis[4];
 moto_measure_t moto_shoot[2];//0左，1右；
 /* 外围模块测试电机 */
 moto_measure_t moto_test;
+//电容功率数据
+float PowerData[4];
 
 /**
   * @brief     CAN1 中断回调函数，在程序初始化时注册
@@ -95,7 +97,8 @@ void can1_recv_callback(uint32_t recv_id, uint8_t data[])
       err_detector_hook(GIMBAL_PIT_OFFLINE);
     }
     break;
-
+		case CAN_SUPERCAP_RECV:
+			PowerDataResolve(data);
     default:
     {
     }
@@ -292,3 +295,22 @@ void send_shoot_moto_current(int16_t left_current,int16_t right_current, int16_t
   
   write_can(USER_CAN2, CAN_CHASSIS_ID, data);
 }
+void sendSuperCap(void)
+{
+	uint16_t temPower =9000;//功率设定步进0.01W，范围为3000-13000（30W-130W）
+	uint8_t sendbuf[8];//发送的数据内容
+	sendbuf[0]=temPower >> 8;
+	sendbuf[1]=temPower;
+	write_can(USER_CAN1, CAN_SUPER_CAP_ID, sendbuf);
+	
+}
+void PowerDataResolve(uint8_t data[])
+{
+	extern float PowerData[4];
+	uint16_t *pPowerData =(uint16_t *) data;
+	PowerData[0]=(float)pPowerData[0]/100.f;//输入电压
+	PowerData[1]=(float)pPowerData[1]/100.f;//电容电压
+	PowerData[2]=(float)pPowerData[2]/100.f;//输入电流
+	PowerData[3]=(float)pPowerData[3]/100.f;//设定功率
+}
+	

@@ -72,7 +72,7 @@ void init_setup(void)
 	//遥控器
   uart_init(DBUS_UART, 100000, WORD_LEN_8B, STOP_BITS_1, PARITY_EVEN);
 	//调试器
-	uart_init(BLUETOOTH_UART, 38400, WORD_LEN_8B, STOP_BITS_1, PARITY_NONE);
+	uart_init(BLUETOOTH_UART, 115200, WORD_LEN_8B, STOP_BITS_1, PARITY_NONE);
 	//MiniPC
 	uart_init(NUC_UART, 115200, WORD_LEN_8B, STOP_BITS_1, PARITY_NONE);
 	//uart_init(REFEREE_UART, 115200, WORD_LEN_8B, STOP_BITS_1, PARITY_NONE);
@@ -141,7 +141,7 @@ void sys_start_task(void)
 #endif
 
 #ifdef USER_TASK5
-    osThreadDef(ostask5, USER_TASK5, osPriorityNormal, 0, 128);
+    osThreadDef(ostask5, USER_TASK5, osPriorityNormal, 0, 256);
     task5_t = osThreadCreate(osThread(ostask5), NULL);
 #endif
 }

@@ -62,6 +62,7 @@ void chassis_task(const void* argu)
   uint32_t chassis_wake_time = osKernelSysTick();
   while (1)
   {
+		
 		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_12,GPIO_PIN_SET);
     //切换底盘状态
     get_chassis_mode();

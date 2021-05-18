@@ -33,6 +33,8 @@
 
 #include "pid.h"
 #include "servo_task.h"
+
+#include "can_device.h"
 #define DEBUG
 //#define AUTO			//显示雷达ui
 #define SHOOT					//显示发射准星ui  //ui待修正
@@ -64,6 +66,7 @@ unpack_data_t referee_unpack_obj;
 float power_buffer;//底盘功率缓冲值
 float chassis_power; //底盘实时功率
 
+char test = 1;
 
 /**
   * @brief          referee task
@@ -91,6 +94,7 @@ void referee_usart_task(void const * argument)
 		Graph_Data line3;
 		Graph_Data line4;
 		Graph_Data line5;
+
 #endif
 
 		memset(&circle,0,sizeof(circle));
@@ -103,6 +107,7 @@ void referee_usart_task(void const * argument)
 		memset(&line4,0,sizeof(line4));
 		memset(&line5,0,sizeof(line5));
 #endif
+		
 
 		
 		Circle_Draw(&circle,"001",UI_Graph_ADD,9,UI_Color_Black,8,960,540,300);
@@ -113,6 +118,7 @@ void referee_usart_task(void const * argument)
 		Line_Draw(&line3,"005",UI_Graph_ADD,7,UI_Color_Black,4,950,460,970,460);
 		Line_Draw(&line4,"006",UI_Graph_ADD,7,UI_Color_Black,4,960,540,960,440);
 		Line_Draw(&line5,"007",UI_Graph_ADD,7,UI_Color_Black,4,955,420,950,420);
+
 		//瞄准线
 #endif
 		
@@ -164,20 +170,21 @@ void referee_usart_task(void const * argument)
 #endif
 				if(i == 40) 
 				{	
-
+				sendSuperCap();//给电容发功率
 				i=0;
 				}
-				//通过if调整发送ui数据的频率
-				//float a[8] = {pid_pit_speed.p,pid_pit_speed.i,pid_pit_speed.d,pid_pit.p,pid_pit.i,pid_pit.d,pit_angle_ref,pit_angle_fdb};
-				float a[5] = {pid_pit_speed.p,pid_pit_speed.i,pid_pit_speed.d,pit_angle_ref,pit_angle_fdb};				
+#ifdef DEBUG
+//				//通过if调整发送ui数据的频率
+				float a[8] = {pid_pit_speed.p,pid_pit_speed.i,pid_pit_speed.d,pid_pit.p,pid_pit.i,pid_pit.d,pit_angle_ref,pit_angle_fdb};
+//				float a[5] = {pid_pit_speed.p,pid_pit_speed.i,pid_pit_speed.d,pit_angle_ref,pit_angle_fdb};				
 				write_uart(BLUETOOTH_UART,(uint8_t*)a,sizeof(a));
-				
+
 //				float b[3] = {pid_pit.p,pid_pit.i,pid_pit.d};
 //				write_uart(BLUETOOTH_UART,(uint8_t*)b,sizeof(b));
 				
 				uint8_t tail[]={0x00,0x00,0x80,0x7f};
 				write_uart(BLUETOOTH_UART,tail,sizeof(tail));
-				
+#endif
 				osDelayUntil(&referee_wake_time, 10);
     }
 }

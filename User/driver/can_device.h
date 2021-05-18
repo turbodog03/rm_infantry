@@ -46,9 +46,10 @@ typedef enum
   CAN_YAW_MOTOR_ID     = 0x205,//ID 1 001
   CAN_PIT_MOTOR_ID     = 0x206,//ID 2 010
   CAN_TRIGGER_MOTOR_ID = 0x207,
-
+	CAN_SUPERCAP_RECV    = 0x211,
   //发送ID
   CAN_CHASSIS_ID       = 0x200,
+	CAN_SUPER_CAP_ID      = 0X210,
   CAN_GIMBAL_ID        = 0x1ff,
 
 } can_msg_id_e;
@@ -79,13 +80,14 @@ typedef struct
   int32_t  filter_rate;
 } moto_measure_t;
 
+
 extern moto_measure_t moto_chassis[];
 extern moto_measure_t moto_yaw;
 extern moto_measure_t moto_pit;
 extern moto_measure_t moto_trigger;
 extern moto_measure_t moto_test;
 extern moto_measure_t moto_shoot[2];//0左，1右；
-
+extern float PowerData[4];
 /**
   * @brief     CAN1 中断回调函数，在程序初始化时注册
   * @param     recv_id: CAN1 接收到的数据 ID
@@ -126,5 +128,9 @@ void send_gimbal_moto_zero_current(void);
   * @brief     发送云台电机电流数据到电调
   */
 void send_shoot_moto_current(int16_t left_current,int16_t right_current, int16_t pit_current);
-
+void sendSuperCap(void);
+/**
+  * @brief     发送功率信息到电容管理板
+ */
+void PowerDataResolve(uint8_t data[]);
 #endif

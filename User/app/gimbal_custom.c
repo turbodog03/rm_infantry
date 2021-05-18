@@ -66,6 +66,7 @@ void gimbal_pitch_control(void)
 /* 云台电机转速的闭环控制 */
 void gimbal_custom_control(void)
 {
+	static int16_t last_current = 0; 
 //	float a[5]={pid_yaw.p,pid_yaw.i,pid_yaw.d,yaw_angle_ref,pit_angle_ref};
 //	int16_t b[2]={yaw_moto_current,pit_moto_current};
 //	write_uart(BLUETOOTH_UART,(uint8_t*)b,4*sizeof(uint8_t));
@@ -80,8 +81,11 @@ void gimbal_custom_control(void)
   /* pitch轴预期速度计算，单位degree/s */
   pit_speed_ref    = pid_calc(&pid_pit, pit_angle_fdb, pit_angle_ref);    //degree
   /* pitch轴电机电压计算 */
-  pit_moto_current = pid_calc(&pid_pit_speed, imu.gyro_y, pit_speed_ref); //degree/s
 	
+  pit_moto_current = pid_calc(&pid_pit_speed, imu.gyro_y, pit_speed_ref); //degree/s
+	//滤波
+	pit_moto_current = 0.5*last_current + 0.5*pit_moto_current;
+	last_current = pit_moto_current;
   //发送电流到云台电机电调
   send_gimbal_moto_current(yaw_moto_current, pit_moto_current);
 	
