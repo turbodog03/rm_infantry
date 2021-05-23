@@ -27,16 +27,28 @@ Project File Date:  05/08/2021
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'D:\keil v5 core\ARM\ARMCC\Bin'
 Build target 'rm_infantry'
-compiling referee_usart_task.c...
-..\User\app\referee_usart_task.c(125): warning:  #177-D: variable "angle"  was declared but never referenced
-  		double angle = 0;
-..\User\app\referee_usart_task.c(54): warning:  #177-D: function "referee_unpack_fifo_data"  was declared but never referenced
-  static void referee_unpack_fifo_data(void);
-..\User\app\referee_usart_task.c: 2 warnings, 0 errors
+compiling gimbal_custom.c...
+..\User\app\gimbal_custom.c(81): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+    VAL_LIMIT(pit_angle_ref, PIT_ANGLE_MIN, PIT_ANGLE_MAX);
+..\User\app\gimbal_custom.c(120): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	if ((pit_angle_ref >= PIT_ANGLE_MAX) && (pit_angle_ref <= PIT_ANGLE_MIN))
+..\User\app\gimbal_custom.c(122): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		VAL_LIMIT(yaw_angle_ref, PIT_ANGLE_MIN, PIT_ANGLE_MAX);
+..\User\app\gimbal_custom.c(99): warning:  #177-D: variable "rate"  was declared but never referenced
+  	float rate=0.3,a,b;
+..\User\app\gimbal_custom.c(99): warning:  #177-D: variable "a"  was declared but never referenced
+  	float rate=0.3,a,b;
+..\User\app\gimbal_custom.c(99): warning:  #177-D: variable "b"  was declared but never referenced
+  	float rate=0.3,a,b;
+..\User\app\gimbal_custom.c(100): warning:  #550-D: variable "last_p"  was set but never used
+  	static float last_p=0.0f,last_y=0.0f;
+..\User\app\gimbal_custom.c(100): warning:  #550-D: variable "last_y"  was set but never used
+  	static float last_p=0.0f,last_y=0.0f;
+..\User\app\gimbal_custom.c: 8 warnings, 0 errors
 linking...
-Program Size: Code=60672 RO-data=2740 RW-data=576 ZI-data=24680  
+Program Size: Code=61192 RO-data=2220 RW-data=592 ZI-data=24816  
 FromELF: creating hex file...
-".\rm_infantry\rm_infantry.axf" - 0 Error(s), 2 Warning(s).
+".\rm_infantry\rm_infantry.axf" - 0 Error(s), 8 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -49,7 +61,7 @@ Package Vendor: Keil
   D:\keli\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:04
 </pre>
 </body>
 </html>

@@ -53,8 +53,10 @@ gimbal_yaw_t gim;
 imu_t        imu;
 
 char color_flag=0;//0为红色，1为蓝色
-char auto_pid_flag = 0;
-char manual_pid_flag = 1;
+char auto_pid_flag = 1;
+char manual_pid_flag = 0;
+
+send_frame auto_tx_data = {0};
 
 uint8_t send_flag=0;
 /* gimbal pid parameter */
@@ -73,7 +75,7 @@ int gimbal_time_ms;
 void gimbal_task(const void* argu)
 {
   //云台和拨弹电机参数初始化
-  gimbal_init_param_manual();
+  gimbal_init_param();
   
   //从flash中读取云台中点位置
   read_gimbal_offset(&pit_center_offset, &yaw_center_offset);
@@ -124,6 +126,8 @@ void gimbal_task(const void* argu)
 					manual_pid_flag = 0;
 				}
 				gimbal_auto_control();
+				
+				
 //					float frame[2]={yaw_relative_angle,pit_relative_angle};
 //					//发送云台角度数据
 //					HAL_GPIO_TogglePin(GPIOG,GPIO_PIN_2);
@@ -152,9 +156,13 @@ void gimbal_task(const void* argu)
       send_gimbal_moto_zero_current();
     }
 		//发送反馈数据
-		frame_send data_send={0xaa,yaw_relative_angle,color_flag,pit_relative_angle,0,1,0,0xbb};
+		//frame_send data_send={0xaa,yaw_relative_angle,color_flag,pit_relative_angle,0,1,0,0xbb};
 		//frame_send data_send={0xaa,yaw_angle_ref,0,pit_angle_ref,0,1,0,0xbb};
-		write_uart(NUC_UART,(uint8_t*)&data_send,sizeof(data_send));
+		auto_tx_data.head = 0xbbbb;
+		auto_tx_data.pitchAngleGet = pit_relative_angle;
+		auto_tx_data.yawAngleGet = yaw_relative_angle;
+		
+		write_uart(NUC_UART,(uint8_t*)&auto_tx_data,sizeof(auto_tx_data));
     //云台任务周期控制 5ms
 		HAL_GPIO_WritePin(GPIOE,GPIO_PIN_4,GPIO_PIN_RESET);
 				
@@ -359,6 +367,7 @@ void gimbal_loop_handle(void)
   //static float chassis_angle_tmp;
   //fdb for feedback
   pit_angle_fdb = pit_relative_angle;
+	//pit_angle_fdb = gim.pit_offset_angle-imu.angle_y;
   yaw_angle_fdb = imu.angle_z - gim.yaw_offset_angle;
   
   //chassis_angle_tmp = yaw_angle_fdb - yaw_relative_angle;
@@ -415,6 +424,7 @@ void gimbal_init_handle(void)
       gim.ctrl_mode = GIMBAL_CLOSE_LOOP_ZGYRO;
       
       gim.yaw_offset_angle = imu.angle_z;
+			gim.pit_offset_angle = imu.angle_y;
       pit_angle_ref = 0;
       yaw_angle_ref = 0;
       
@@ -460,7 +470,7 @@ void gimbal_init_param(void)
   pid_init(&pid_pit, 3000, 600,
                   90.0, 1.8, 400.000); //
   pid_init(&pid_pit_speed, 8000,2000,
-                  10, 0.01, 0.5);
+                  11, 0.01, 5);
 
   /* 云台yaw轴电机PID参数初始化 */
   pid_init(&pid_yaw, 4000, 50,
@@ -483,9 +493,9 @@ void gimbal_init_param_manual(void)
   
   /* 云台pitch轴电机PID参数初始化 */
   pid_init(&pid_pit, 3000, 600,
-                  90.0, 1.8, 400.000); //
-  pid_init(&pid_pit_speed, 8000,2000,
-                  10, 0.01, 0.5);
+                  90.0, 0.0, 750); //
+  pid_init(&pid_pit_speed, 8000,2000, 
+                  11, 0.0, 5);
 
   /* 云台yaw轴电机PID参数初始化 */
   pid_init(&pid_yaw, 4000, 50,
@@ -503,9 +513,9 @@ void gimbal_init_param_manual(void)
 void pid_reset_manual(void){
 	  /* 云台pitch轴电机PID参数重置 */
   pid_reset(&pid_pit,
-                  90.0, 1.8, 400.000); //
+                  90.0, 0.0, 750); //
   pid_reset(&pid_pit_speed,
-                  10, 0.01, 0.5);
+                  11, 0.0, 5.5);
 	pid_reset(&pid_pit_auto,
 									0.1,0.05,0.0);
 	
@@ -524,9 +534,9 @@ void pid_reset_manual(void){
 void pid_reset_auto(void){
 		  /* 云台pitch轴电机PID参数重置 */
   pid_reset(&pid_pit,
-                  90.0, 1.8, 400.000); //
+                  90.0, 1.8, 400); //
   pid_reset(&pid_pit_speed,
-                  10, 0.01, 0.5);
+                  11, 0.01, 5);
 	pid_reset(&pid_pit_auto,
 									0.1,0.05,0.0);
 	

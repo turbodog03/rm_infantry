@@ -5,7 +5,7 @@
 #include "cmsis_os.h"
 
 /*************************发射速度设置*******************************/
-#define SHOT_FRIC_WHEEL_SPEED    6000 //最大为2500
+#define SHOT_FRIC_WHEEL_SPEED    7000 //最大为2500
 
 #define SHOOT_PERIOD 10
 /* 单发拨弹的编码器行程 */

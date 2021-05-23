@@ -66,14 +66,14 @@ void dbus_uart_callback(void)
   * @brief     自瞄中断回调函数，在设置 UART 接收时注册
   */
 extern uint16_t crc16_check(uint8_t* data, uint32_t length);
-frame_recv data_recv;
+recv_frame data_recv;
 void nuc_uart_callback(void)
 {
 	//HAL_GPIO_TogglePin(GPIOG,GPIO_PIN_1);
 //	send_flag=1;
 	if(gim.ctrl_mode==GIMBAL_AUTO)
 	{
-		if(nuc_recv[0]==0xff && (crc16_check(nuc_recv,14)==*((uint16_t*)(nuc_recv+14))))
+		if(((uint16_t*)nuc_recv)[0]==0xaaaa)
 		{
 			memcpy((void*)&data_recv,nuc_recv,sizeof(data_recv));
 		}

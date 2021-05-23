@@ -6,13 +6,19 @@
 #include "keyboard.h"
 #include "detect_task.h"
 #include "stdlib.h"
+#include "uart_device.h"
 
 extern void turn_on_off_friction_wheel(void);
+void cap_control();
+void auto_shoot_control();
 extern int16_t trigger_moto_speed_ref;
 extern int32_t  trigger_moto_position_ref; //拨弹电机位置目标值
 extern char mmp_buf[20];
 void shoot_custom_control(void);
-
+int cap_open_flag = 1;
+int cap_ok = 1;
+int auto_shoot_cmd = 0;
+int auto_shoot_ok = 0;
 
 /* 射击任务相关参数 */
 enum SHOOT_STATE shoot_state; 
@@ -44,8 +50,8 @@ void shoot_task(const void* argu)
   pid_init(&pid_trigger, 4000, 2000, 0.15f, 0, 0);
   pid_init(&pid_trigger_speed, 9000, 4000, 1.5, 0.05, 0);
 	/* 摩擦轮电机PID参数初始化 */
-	pid_init(&pid_shoot_left, 7000, 3000, 3.0f, 0.1, 0.0);
-	pid_init(&pid_shoot_right, 7000, 3000, 3.0f, 0.1, 0.0);
+	pid_init(&pid_shoot_left, 7000, 3000, 20.0f, 0.2, 0.0);
+	pid_init(&pid_shoot_right, 7000, 3000,20.0f, 0.2, 0.0);
 	uint32_t shoot_wake_time = osKernelSysTick();
 	while(1)
 	{
@@ -64,7 +70,19 @@ void shoot_task(const void* argu)
 
 		if (glb_err.err_list[REMOTE_CTRL_OFFLINE].err_exist)
 			fric_wheel_run = 0;
-
+		//开关弹仓盖
+		if (rc.kb.bit.R){
+			cap_open_flag = -1;
+			cap_ok = 0;
+		}
+		if (rc.kb.bit.R &&rc.kb.bit.SHIFT){
+			cap_open_flag = 1;
+			cap_ok = 0;
+		}
+		
+		/*自动射击实现判断逻辑*/
+		void auto_shoot_control();
+			
 		
 		/* 开关摩擦轮实现函数 */
 		turn_on_off_friction_wheel();
@@ -72,7 +90,7 @@ void shoot_task(const void* argu)
 		/* bullet single or continue trigger command control  */
 		{
 			if ( RC_SINGLE_TRIG                  //遥控器单发
-				|| (rc.mouse.l && shoot_state==dont_shoot) ) //鼠标单发
+				|| (rc.mouse.l && shoot_state==dont_shoot) || auto_shoot_cmd ) //鼠标单发
 			{
 				shoot_cmd=1;
 				continue_shoot_time = HAL_GetTick();
@@ -105,7 +123,7 @@ void shoot_task(const void* argu)
 
 		/* 单发连发射击实现函数 */
 		shoot_custom_control();
-
+		cap_control();
 		
 		if(rc.sw1&&(last_sw1!=rc.sw1))
 		{
@@ -121,3 +139,31 @@ void shoot_task(const void* argu)
 		osDelayUntil(&shoot_wake_time, SHOOT_PERIOD);
 	}
 }
+
+
+
+void cap_control(){
+	if(!cap_ok){
+		if(cap_open_flag == 1){
+			set_pwm_param(1, 1000);
+		}
+		else{
+			set_pwm_param(1,2000);
+		}
+		start_pwm_output(1);
+		cap_ok = 1;
+	}
+}
+
+void auto_shoot_control(){
+		if(!auto_shoot_ok){
+			if(data_recv.shootCommand == 1){
+				auto_shoot_cmd = 1;
+				auto_shoot_ok = 1;
+			}
+		}
+		if(data_recv.shootCommand ==0){
+			auto_shoot_cmd = 0;
+			auto_shoot_ok = 0;
+		}
+	}

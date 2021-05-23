@@ -163,52 +163,52 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>referee_recv</ItemText>
+          <ItemText>gim.yaw_offset_angle</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>heat_data</ItemText>
+          <ItemText>imu</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>glb_cali_data.gimbal_cali_data</ItemText>
+          <ItemText>data_recv</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>chassis_moto_current</ItemText>
+          <ItemText>nuc_recv</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>1</WinNumber>
-          <ItemText>chassis_moto_speed_ref</ItemText>
+          <ItemText>moto_shoot</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>*power_buffer</ItemText>
+          <ItemText>moto_trigger</ItemText>
         </Ww>
         <Ww>
           <count>6</count>
           <WinNumber>1</WinNumber>
-          <ItemText>*chassis_power</ItemText>
+          <ItemText>cap_open_flag</ItemText>
         </Ww>
         <Ww>
           <count>7</count>
           <WinNumber>1</WinNumber>
-          <ItemText>chassis_total_current</ItemText>
+          <ItemText>cap_ok</ItemText>
         </Ww>
         <Ww>
           <count>8</count>
           <WinNumber>1</WinNumber>
-          <ItemText>imu.gyro_y</ItemText>
+          <ItemText>spin_flag</ItemText>
         </Ww>
         <Ww>
           <count>9</count>
           <WinNumber>1</WinNumber>
-          <ItemText>PowerData</ItemText>
+          <ItemText>gim.ctrl_mode</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

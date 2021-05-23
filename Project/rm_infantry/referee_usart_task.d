@@ -66,3 +66,4 @@
 .\rm_infantry\referee_usart_task.o: ..\User\algorithm\pid.h
 .\rm_infantry\referee_usart_task.o: ..\User\app\servo_task.h
 .\rm_infantry\referee_usart_task.o: ..\User\driver\can_device.h
+.\rm_infantry\referee_usart_task.o: ..\User\app\gimbal_task.h

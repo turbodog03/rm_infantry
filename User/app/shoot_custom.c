@@ -127,8 +127,10 @@ float ShootAndDelay(float speedInNumsPerSec, uint32_t numsOfOneShot, uint32_t de
 /* 子弹的单发和连发处理 */
 void shoot_custom_control(void)
 {
+	
   if (fric_wheel_run)
   {
+		
 		switch(shoot_state)
 		{
 			case single_shoot:
@@ -160,6 +162,7 @@ void shoot_custom_control(void)
 				trigger_moto_speed_ref = 0;
 				goto emmm;
 		}
+
 		trigger_moto_speed_ref=-ShootAndDelay(speedInNumsPerSec,numsOfOneShot,delayTimeInMs);
     block_bullet_handle();                                 //卡弹处理
     /* 闭环计算拨弹电机电流 */

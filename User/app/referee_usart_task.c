@@ -35,6 +35,8 @@
 #include "servo_task.h"
 
 #include "can_device.h"
+
+#include "gimbal_task.h"
 #define DEBUG
 //#define AUTO			//显示雷达ui
 #define SHOOT					//显示发射准星ui  //ui待修正
@@ -173,15 +175,13 @@ void referee_usart_task(void const * argument)
 				sendSuperCap();//给电容发功率
 				i=0;
 				}
+				//通过if调整发送ui数据的频率
 #ifdef DEBUG
-//				//通过if调整发送ui数据的频率
-				float a[8] = {pid_pit_speed.p,pid_pit_speed.i,pid_pit_speed.d,pid_pit.p,pid_pit.i,pid_pit.d,pit_angle_ref,pit_angle_fdb};
-//				float a[5] = {pid_pit_speed.p,pid_pit_speed.i,pid_pit_speed.d,pit_angle_ref,pit_angle_fdb};				
-				write_uart(BLUETOOTH_UART,(uint8_t*)a,sizeof(a));
-
-//				float b[3] = {pid_pit.p,pid_pit.i,pid_pit.d};
-//				write_uart(BLUETOOTH_UART,(uint8_t*)b,sizeof(b));
-				
+				//调用蓝牙串口的发送来debug
+				float a[9] = {pid_pit_speed.p,pid_pit_speed.i,pid_pit_speed.d,pid_pit.p,pid_pit.i,pid_pit.d,pit_angle_ref,pit_angle_fdb, pid_pit_speed.dout};	
+				//float a[3] = {(float)moto_shoot[0].speed_rpm, (float)moto_shoot[1].speed_rpm, 6000};
+				//float a[4] = {moto_trigger.ecd, moto_trigger.total_ecd, moto_trigger.round_cnt, gim.ctrl_mode} ;
+				write_uart(BLUETOOTH_UART,(uint8_t*)a,sizeof(a));				
 				uint8_t tail[]={0x00,0x00,0x80,0x7f};
 				write_uart(BLUETOOTH_UART,tail,sizeof(tail));
 #endif
