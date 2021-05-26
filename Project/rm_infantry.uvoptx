@@ -210,6 +210,21 @@
           <WinNumber>1</WinNumber>
           <ItemText>gim.ctrl_mode</ItemText>
         </Ww>
+        <Ww>
+          <count>10</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>pid_pit_speed</ItemText>
+        </Ww>
+        <Ww>
+          <count>11</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>bluetooth_recv</ItemText>
+        </Ww>
+        <Ww>
+          <count>12</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>bluetooth_uart_callback</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>

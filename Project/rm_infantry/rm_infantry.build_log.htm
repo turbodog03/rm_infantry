@@ -26,29 +26,78 @@ Project File Date:  05/08/2021
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'D:\keil v5 core\ARM\ARMCC\Bin'
-Build target 'rm_infantry'
+Rebuild target 'rm_infantry'
+compiling crc16.c...
+compiling pid.c...
+..\User\algorithm\pid.c(178): warning:  #1-D: last line of file ends without a newline
+  }
+..\User\algorithm\pid.c: 1 warning, 0 errors
+compiling calibrate.c...
+compiling keyboard.c...
+compiling detect_task.c...
+compiling uart_device.c...
+compiling ramp.c...
+compiling can_device.c...
+..\User\driver\can_device.c(316): warning:  #1-D: last line of file ends without a newline
+  	
+..\User\driver\can_device.c: 1 warning, 0 errors
+compiling startup.c...
+compiling CRC8_CRC16.c...
+compiling chassis_task.c...
+compiling gimbal_task.c...
+..\User\app\gimbal_task.c(384): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+      if ((pit_relative_angle >= PIT_ANGLE_MIN) && (pit_relative_angle <= PIT_ANGLE_MAX))
+..\User\app\gimbal_task.c(386): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        VAL_LIMIT(pit_angle_ref, PIT_ANGLE_MIN, PIT_ANGLE_MAX);
+..\User\app\gimbal_task.c(489): warning:  #177-D: function "gimbal_init_param_manual"  was declared but never referenced
+  void gimbal_init_param_manual(void)
+..\User\app\gimbal_task.c: 3 warnings, 0 errors
+compiling referee.c...
+compiling shoot_task.c...
+..\User\app\shoot_task.c(169): warning:  #1-D: last line of file ends without a newline
+  	}
+..\User\app\shoot_task.c: 1 warning, 0 errors
+compiling fifo.c...
+compiling bsp_usart.c...
 compiling gimbal_custom.c...
 ..\User\app\gimbal_custom.c(81): warning:  #1035-D: single-precision operand implicitly converted to double-precision
     VAL_LIMIT(pit_angle_ref, PIT_ANGLE_MIN, PIT_ANGLE_MAX);
-..\User\app\gimbal_custom.c(120): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\User\app\gimbal_custom.c(121): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   	if ((pit_angle_ref >= PIT_ANGLE_MAX) && (pit_angle_ref <= PIT_ANGLE_MIN))
-..\User\app\gimbal_custom.c(122): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\User\app\gimbal_custom.c(123): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   		VAL_LIMIT(yaw_angle_ref, PIT_ANGLE_MIN, PIT_ANGLE_MAX);
-..\User\app\gimbal_custom.c(99): warning:  #177-D: variable "rate"  was declared but never referenced
+..\User\app\gimbal_custom.c(100): warning:  #177-D: variable "rate"  was declared but never referenced
   	float rate=0.3,a,b;
-..\User\app\gimbal_custom.c(99): warning:  #177-D: variable "a"  was declared but never referenced
+..\User\app\gimbal_custom.c(100): warning:  #177-D: variable "a"  was declared but never referenced
   	float rate=0.3,a,b;
-..\User\app\gimbal_custom.c(99): warning:  #177-D: variable "b"  was declared but never referenced
+..\User\app\gimbal_custom.c(100): warning:  #177-D: variable "b"  was declared but never referenced
   	float rate=0.3,a,b;
-..\User\app\gimbal_custom.c(100): warning:  #550-D: variable "last_p"  was set but never used
+..\User\app\gimbal_custom.c(101): warning:  #550-D: variable "last_p"  was set but never used
   	static float last_p=0.0f,last_y=0.0f;
-..\User\app\gimbal_custom.c(100): warning:  #550-D: variable "last_y"  was set but never used
+..\User\app\gimbal_custom.c(101): warning:  #550-D: variable "last_y"  was set but never used
   	static float last_p=0.0f,last_y=0.0f;
 ..\User\app\gimbal_custom.c: 8 warnings, 0 errors
+compiling chassis_custom.c...
+..\User\app\chassis_custom.c(98): warning:  #177-D: variable "max"  was declared but never referenced
+    float max = 0;
+..\User\app\chassis_custom.c: 1 warning, 0 errors
+compiling RM_Cilent_UI.c...
+compiling shoot_custom.c...
+compiling servo_task.c...
+..\User\app\servo_task.c(36): warning:  #1-D: last line of file ends without a newline
+  }
+..\User\app\servo_task.c: 1 warning, 0 errors
+compiling stm32f4xx_it.c...
+compiling referee_usart_task.c...
+..\User\app\referee_usart_task.c(127): warning:  #177-D: variable "angle"  was declared but never referenced
+  		double angle = 0;
+..\User\app\referee_usart_task.c(56): warning:  #177-D: function "referee_unpack_fifo_data"  was declared but never referenced
+  static void referee_unpack_fifo_data(void);
+..\User\app\referee_usart_task.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=61192 RO-data=2220 RW-data=592 ZI-data=24816  
+Program Size: Code=61196 RO-data=2216 RW-data=592 ZI-data=24816  
 FromELF: creating hex file...
-".\rm_infantry\rm_infantry.axf" - 0 Error(s), 8 Warning(s).
+".\rm_infantry\rm_infantry.axf" - 0 Error(s), 18 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -61,7 +110,7 @@ Package Vendor: Keil
   D:\keli\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:04
+Build Time Elapsed:  00:00:15
 </pre>
 </body>
 </html>

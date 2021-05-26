@@ -468,9 +468,9 @@ void gimbal_init_param(void)
   
   /* 云台pitch轴电机PID参数初始化 */
   pid_init(&pid_pit, 3000, 600,
-                  90.0, 1.8, 400.000); //
+                  90.0, 1.8, 750.0); //
   pid_init(&pid_pit_speed, 8000,2000,
-                  11, 0.01, 5);
+                  10, 0.01, 5.5);
 
   /* 云台yaw轴电机PID参数初始化 */
   pid_init(&pid_yaw, 4000, 50,
@@ -493,9 +493,9 @@ void gimbal_init_param_manual(void)
   
   /* 云台pitch轴电机PID参数初始化 */
   pid_init(&pid_pit, 3000, 600,
-                  90.0, 0.0, 750); //
+                  90.0, 1.8, 400.0); //
   pid_init(&pid_pit_speed, 8000,2000, 
-                  11, 0.0, 5);
+                  10.0, 0.01, 5.5);
 
   /* 云台yaw轴电机PID参数初始化 */
   pid_init(&pid_yaw, 4000, 50,
@@ -513,9 +513,9 @@ void gimbal_init_param_manual(void)
 void pid_reset_manual(void){
 	  /* 云台pitch轴电机PID参数重置 */
   pid_reset(&pid_pit,
-                  90.0, 0.0, 750); //
+                  90.0, 2, 750); //
   pid_reset(&pid_pit_speed,
-                  11, 0.0, 5.5);
+                  12.0, 0.02, 5.5);
 	pid_reset(&pid_pit_auto,
 									0.1,0.05,0.0);
 	
@@ -534,9 +534,9 @@ void pid_reset_manual(void){
 void pid_reset_auto(void){
 		  /* 云台pitch轴电机PID参数重置 */
   pid_reset(&pid_pit,
-                  90.0, 1.8, 400); //
+                  90.0, 2, 750.0); //
   pid_reset(&pid_pit_speed,
-                  11, 0.01, 5);
+                  12.0, 0.02, 5.5);
 	pid_reset(&pid_pit_auto,
 									0.1,0.05,0.0);
 	

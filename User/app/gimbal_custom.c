@@ -82,8 +82,9 @@ void gimbal_custom_control(void)
   /* pitch轴预期速度计算，单位degree/s */
   pit_speed_ref    = pid_calc(&pid_pit, pit_angle_fdb, pit_angle_ref);    //degree
   /* pitch轴电机电压计算 */
-  //滤波
+
 	pit_moto_current = pid_calc(&pid_pit_speed, imu.gyro_y, pit_speed_ref); //degree/s
+	//滤波
 	pit_moto_current = 0.5*last_current + 0.5*pit_moto_current;
 	last_current = pit_moto_current;
 

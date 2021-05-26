@@ -9,14 +9,14 @@
 #include "uart_device.h"
 
 extern void turn_on_off_friction_wheel(void);
-void cap_control();
-void auto_shoot_control();
+void cap_control(void);
+void auto_shoot_control(void);
 extern int16_t trigger_moto_speed_ref;
 extern int32_t  trigger_moto_position_ref; //拨弹电机位置目标值
 extern char mmp_buf[20];
 void shoot_custom_control(void);
-int cap_open_flag = 1;
-int cap_ok = 1;
+int cap_open_flag = 0;
+int cap_ok = 0;
 int auto_shoot_cmd = 0;
 int auto_shoot_ok = 0;
 
