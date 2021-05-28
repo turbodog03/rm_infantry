@@ -854,12 +854,12 @@
             <File>
               <FileName>referee.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\referee.c</FilePath>
+              <FilePath>..\User\referee\referee.c</FilePath>
             </File>
             <File>
               <FileName>protocol.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\protocol.h</FilePath>
+              <FilePath>..\User\referee\protocol.h</FilePath>
             </File>
             <File>
               <FileName>RM_Cilent_UI.c</FileName>

@@ -3003,6 +3003,7 @@ Image Symbol Table
     ..\User\referee\RM_Cilent_UI.c           0x00000000   Number         0  rm_cilent_ui.o ABSOLUTE
     ..\User\referee\bsp_usart.c              0x00000000   Number         0  bsp_usart.o ABSOLUTE
     ..\User\referee\fifo.c                   0x00000000   Number         0  fifo.o ABSOLUTE
+    ..\User\referee\referee.c                0x00000000   Number         0  referee.o ABSOLUTE
     ..\User\startup.c                        0x00000000   Number         0  startup.o ABSOLUTE
     ..\\Inc\\stm32f4xx_it.c                  0x00000000   Number         0  stm32f4xx_it.o ABSOLUTE
     ..\\User\\algorithm\\pid.c               0x00000000   Number         0  pid.o ABSOLUTE
@@ -3036,7 +3037,6 @@ Image Symbol Table
     lib\src\bsp_imu.c                        0x00000000   Number         0  bsp_imu.o ABSOLUTE
     lib\src\bsp_io.c                         0x00000000   Number         0  bsp_io.o ABSOLUTE
     lib\src\bsp_uart.c                       0x00000000   Number         0  bsp_uart.o ABSOLUTE
-    referee.c                                0x00000000   Number         0  referee.o ABSOLUTE
     startup_stm32f427xx.s                    0x00000000   Number         0  startup_stm32f427xx.o ABSOLUTE
     RESET                                    0x08000000   Section      428  startup_stm32f427xx.o(RESET)
     !!!main                                  0x080001ac   Section        8  __main.o(!!!main)
