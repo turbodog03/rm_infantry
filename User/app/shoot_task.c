@@ -18,7 +18,7 @@ void shoot_custom_control(void);
 int cap_open_flag = 0;
 int cap_ok = 0;
 int auto_shoot_cmd = 0;
-int auto_shoot_ok = 0;
+int auto_shoot_ok = 1;
 
 /* 射击任务相关参数 */
 enum SHOOT_STATE shoot_state; 
@@ -81,7 +81,7 @@ void shoot_task(const void* argu)
 		}
 		
 		/*自动射击实现判断逻辑*/
-		void auto_shoot_control();
+		auto_shoot_control();
 			
 		
 		/* 开关摩擦轮实现函数 */
@@ -90,7 +90,7 @@ void shoot_task(const void* argu)
 		/* bullet single or continue trigger command control  */
 		{
 			if ( RC_SINGLE_TRIG                  //遥控器单发
-				|| (rc.mouse.l && shoot_state==dont_shoot) || auto_shoot_cmd ) //鼠标单发
+				|| (rc.mouse.l && shoot_state==dont_shoot) || (auto_shoot_cmd && shoot_state==dont_shoot) ) //鼠标单发
 			{
 				shoot_cmd=1;
 				continue_shoot_time = HAL_GetTick();
@@ -155,15 +155,28 @@ void cap_control(){
 	}
 }
 
+//void auto_shoot_control(){
+//		if(!auto_shoot_ok){
+//			if(data_recv.shootCommand == 1){
+//				auto_shoot_cmd = 1;
+//				auto_shoot_ok = 1;
+//			}
+//		}
+//		else{
+//			auto_shoot_cmd = 0;				
+//	}
+//}
 void auto_shoot_control(){
-		if(!auto_shoot_ok){
-			if(data_recv.shootCommand == 1){
-				auto_shoot_cmd = 1;
-				auto_shoot_ok = 1;
-			}
+	if(data_recv.shootCommand == 1){
+		if(auto_shoot_ok){
+			auto_shoot_cmd =0;
 		}
-		if(data_recv.shootCommand ==0){
-			auto_shoot_cmd = 0;
-			auto_shoot_ok = 0;
+		else{
+			auto_shoot_cmd = 1;
+			auto_shoot_ok = 1;
 		}
 	}
+	else{
+		auto_shoot_ok = 0;
+	}
+}

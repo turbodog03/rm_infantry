@@ -19,6 +19,7 @@
 #define TRIGGER_MOTOR_SPEED      1500 //
 
 void shoot_task(const void* argu);
+void auto_shoot_control();
 enum SHOOT_STATE
 {
 	single_shoot,
@@ -29,5 +30,6 @@ enum SHOOT_STATE
 
 extern enum SHOOT_STATE shoot_state; 
 extern uint8_t shoot_cmd;
+
 #endif
 

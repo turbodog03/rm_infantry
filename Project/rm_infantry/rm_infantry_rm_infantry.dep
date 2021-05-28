@@ -295,7 +295,7 @@ I (..\Inc\os_inc\semphr.h)(0x6095D6D6)
 I (..\Inc\os_inc\event_groups.h)(0x6095D6D6)
 I (..\User\driver\uart_device.h)(0x60AA4397)
 I (..\User\driver\calibrate.h)(0x6095D6D6)
-I (..\User\app\shoot_task.h)(0x60A9136B)
+I (..\User\app\shoot_task.h)(0x60B0F3A4)
 I (..\User\sys.h)(0x60A7D75F)
 I (..\User\app\referee_usart_task.h)(0x6095D6D6)
 I (..\User\referee\bsp_usart.h)(0x6095D6D6)
@@ -478,8 +478,8 @@ I (..\Inc\os_inc\timers.h)(0x6095D6D6)
 I (..\Inc\os_inc\queue.h)(0x6095D6D6)
 I (..\Inc\os_inc\semphr.h)(0x6095D6D6)
 I (..\Inc\os_inc\event_groups.h)(0x6095D6D6)
-F (..\User\app\shoot_task.c)(0x60AC6880)(-c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ..\User\app -I ..\..\winter_camp -I ..\User\referee -I ..\Inc -I ..\Inc\hal_inc -I ..\Inc\m3_inc -I ..\Inc\os_inc -I ..\Inc\hal_inc\Legacy -I ..\User -I ..\User\algorithm -I ..\User\app -I ..\User\driver --c99-ID:\keli\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I"D:\keil v5 core\ARM\CMSIS\Include"-D__UVISION_VERSION="531" -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx-o .\rm_infantry\shoot_task.o --omf_browse .\rm_infantry\shoot_task.crf --depend .\rm_infantry\shoot_task.d)
-I (..\User\app\shoot_task.h)(0x60A9136B)
+F (..\User\app\shoot_task.c)(0x60B0FFB3)(-c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ..\User\app -I ..\..\winter_camp -I ..\User\referee -I ..\Inc -I ..\Inc\hal_inc -I ..\Inc\m3_inc -I ..\Inc\os_inc -I ..\Inc\hal_inc\Legacy -I ..\User -I ..\User\algorithm -I ..\User\app -I ..\User\driver --c99-ID:\keli\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I"D:\keil v5 core\ARM\CMSIS\Include"-D__UVISION_VERSION="531" -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx-o .\rm_infantry\shoot_task.o --omf_browse .\rm_infantry\shoot_task.crf --depend .\rm_infantry\shoot_task.d)
+I (..\User\app\shoot_task.h)(0x60B0F3A4)
 I (..\User\sys.h)(0x60A7D75F)
 I (..\User\rm_hal_lib.h)(0x6095D6D6)
 I (..\Inc\hal_inc\stm32f4xx_hal.h)(0x6095D6D6)
@@ -793,7 +793,7 @@ I (..\Inc\hal_inc\stm32f4xx_hal_uart.h)(0x6095D6D6)
 I (..\User\rm_hal_lib.h)(0x6095D6D6)
 I (..\User\driver\can_device.h)(0x60A3E531)
 I (..\User\algorithm\pid.h)(0x60A5EC03)
-I (..\User\app\shoot_task.h)(0x60A9136B)
+I (..\User\app\shoot_task.h)(0x60B0F3A4)
 I (..\User\sys.h)(0x60A7D75F)
 I (..\Inc\os_inc\cmsis_os.h)(0x6095D6D6)
 I (..\Inc\os_inc\FreeRTOS.h)(0x6095D6D6)
