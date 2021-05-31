@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\rm_infantry\rm_infantry.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\rm_infantry\rm_infantry.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Fri May 28 23:37:21 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Mon May 31 17:42:44 2021
 <BR><P>
 <H3>Maximum Stack Usage =        524 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -2263,7 +2263,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_task
 </UL>
 
-<P><STRONG><a name="[173]"></a>chassis_moto_speed_calc</STRONG> (Thumb, 180 bytes, Stack size 12 bytes, chassis_custom.o(i.chassis_moto_speed_calc))
+<P><STRONG><a name="[173]"></a>chassis_moto_speed_calc</STRONG> (Thumb, 460 bytes, Stack size 12 bytes, chassis_custom.o(i.chassis_moto_speed_calc))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = chassis_moto_speed_calc
 </UL>
 <BR>[Called By]<UL><LI><a href="#[172]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_custom_control
@@ -2702,7 +2702,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[1a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_setup
 </UL>
 
-<P><STRONG><a name="[7d]"></a>referee_usart_task</STRONG> (Thumb, 556 bytes, Stack size 176 bytes, referee_usart_task.o(i.referee_usart_task))
+<P><STRONG><a name="[7d]"></a>referee_usart_task</STRONG> (Thumb, 558 bytes, Stack size 176 bytes, referee_usart_task.o(i.referee_usart_task))
 <BR><BR>[Stack]<UL><LI>Max Depth = 312<LI>Call Chain = referee_usart_task &rArr; UI_ReFresh &rArr; UI_SendByte &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendSuperCap

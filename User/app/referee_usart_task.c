@@ -112,14 +112,14 @@ void referee_usart_task(void const * argument)
 		
 
 		
-		Circle_Draw(&circle,"001",UI_Graph_ADD,9,UI_Color_Black,8,960,540,300);
-//		Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,8,960,540,1260,540);			
+		Circle_Draw(&circle,"001",UI_Graph_ADD,9,UI_Color_Black,4,960,540,300);
+//		Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,4,960,540,1260,540);			
 #ifdef SHOOT
-		Line_Draw(&line1,"003",UI_Graph_ADD,7,UI_Color_Black,4,910,540,1010,540);
-		Line_Draw(&line2,"004",UI_Graph_ADD,7,UI_Color_Black,4,930,500,990,500);
-		Line_Draw(&line3,"005",UI_Graph_ADD,7,UI_Color_Black,4,950,460,970,460);
-		Line_Draw(&line4,"006",UI_Graph_ADD,7,UI_Color_Black,4,960,540,960,440);
-		Line_Draw(&line5,"007",UI_Graph_ADD,7,UI_Color_Black,4,955,420,950,420);
+		Line_Draw(&line1,"003",UI_Graph_ADD,7,UI_Color_Black,2,910,540,1010,540);
+		Line_Draw(&line2,"004",UI_Graph_ADD,7,UI_Color_Black,2,930,500,990,500);
+		Line_Draw(&line3,"005",UI_Graph_ADD,7,UI_Color_Black,2,950,460,970,460);
+		Line_Draw(&line4,"006",UI_Graph_ADD,7,UI_Color_Black,2,960,540,960,440);
+		Line_Draw(&line5,"007",UI_Graph_ADD,7,UI_Color_Black,2,955,420,965,420);
 
 		//瞄准线
 #endif
@@ -154,7 +154,7 @@ void referee_usart_task(void const * argument)
 #endif
 #ifdef AUTO
 				if(i == 15 ){
-					Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,8,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);			
+					Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,4,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);			
 					UI_ReFresh(2,circle,line);
 				}
 					if(i == 30){
@@ -164,7 +164,7 @@ void referee_usart_task(void const * argument)
 						}
 					angle++;						
 //					
-					Line_Draw(&line,"002",UI_Graph_Change,8,UI_Color_Black,8,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);			
+					Line_Draw(&line,"002",UI_Graph_Change,8,UI_Color_Black,2,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);			
 //					//sin()、cos()的参数是弧度，角度转弧度
 					UI_ReFresh(1,line);
 					//更新线的位置

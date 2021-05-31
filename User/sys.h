@@ -118,7 +118,7 @@
 /******** 底盘最大速度设置 *******/
 /* 底盘移动最大速度，单位是毫米每秒 */
 #define MAX_CHASSIS_VX_SPEED 3000
-#define MAX_CHASSIS_VY_SPEED 8000
+#define MAX_CHASSIS_VY_SPEED 6000
 /* 底盘旋转最大速度，单位是度每秒 */
 #define MAX_CHASSIS_VR_SPEED 300
 
