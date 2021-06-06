@@ -102,6 +102,7 @@ typedef __packed struct
     uint8_t rotateDricetion;   //旋转方向
     float timeBais;         //预测时间偏置
     float compensateBais;   //弹道补偿偏置
+		int shootStatusGet;
 }send_frame;
 
 

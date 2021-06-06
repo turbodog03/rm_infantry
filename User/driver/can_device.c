@@ -31,6 +31,7 @@
 #include "can_device.h"
 #include "detect_task.h"
 #include "sys.h"
+#include "shoot_task.h"
 
 /* 云台电机 */
 moto_measure_t moto_pit;
@@ -45,6 +46,8 @@ moto_measure_t moto_shoot[2];//0左，1右；
 moto_measure_t moto_test;
 //电容功率数据
 float PowerData[4];
+//发射状态，平时为0，每成功发射一发跳变一次
+int shoot_status = 0;
 
 /**
   * @brief     CAN1 中断回调函数，在程序初始化时注册
@@ -119,8 +122,15 @@ void can2_recv_callback(uint32_t recv_id, uint8_t data[])
     //case CAN2 device handle
 		case CAN_3508_M1_ID:
     {
-      moto_shoot[0].msg_cnt++ <= 50 ? get_moto_offset(&moto_chassis[0], data) : \
+      moto_shoot[0].msg_cnt++ <= 50 ? get_moto_offset(&moto_shoot[0], data) : \
       encoder_data_handle(&moto_shoot[0], data);
+			//通过转速变化判断是否有子弹射出
+			if(-moto_shoot[0].speed_rpm < SHOT_SUCCESS_FRIC_WHEEL_SPEED && -moto_shoot[0].speed_rpm > SHOT_ABLE_FRIC_WHEEL_SPEED){
+				shoot_status = 1;
+			}
+			else{
+				shoot_status = 0;
+			}
       err_detector_hook(AMMO_BOOSTER1_OFFLINE);
     }
     break;

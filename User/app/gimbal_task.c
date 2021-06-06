@@ -161,6 +161,7 @@ void gimbal_task(const void* argu)
 		auto_tx_data.head = 0xbbbb;
 		auto_tx_data.pitchAngleGet = pit_relative_angle;
 		auto_tx_data.yawAngleGet = yaw_relative_angle;
+		auto_tx_data.shootStatusGet = shoot_status;
 		
 		write_uart(NUC_UART,(uint8_t*)&auto_tx_data,sizeof(auto_tx_data));
     //云台任务周期控制 5ms
@@ -468,9 +469,9 @@ void gimbal_init_param(void)
   
   /* 云台pitch轴电机PID参数初始化 */
   pid_init(&pid_pit, 3000, 600,
-                  95.0, 0.9, 750.0); //
+                  90.0, 0.9, 750.0); //
   pid_init(&pid_pit_speed, 8000,2000,
-                  17, 0.01, 5);
+                  16, 0.01, 3);
 
   /* 云台yaw轴电机PID参数初始化 */
   pid_init(&pid_yaw, 4000, 50,
@@ -493,9 +494,9 @@ void gimbal_init_param_manual(void)
   
   /* 云台pitch轴电机PID参数初始化 */
   pid_init(&pid_pit, 3000, 600,
-                  95.0, 0.9, 750.0); //
+                  90.0, 0.9, 750.0); //
   pid_init(&pid_pit_speed, 8000,2000, 
-                  17, 0.01, 5);
+                  16, 0.01, 3);
 
   /* 云台yaw轴电机PID参数初始化 */
   pid_init(&pid_yaw, 4000, 50,
@@ -513,9 +514,9 @@ void gimbal_init_param_manual(void)
 void pid_reset_manual(void){
 	  /* 云台pitch轴电机PID参数重置 */
   pid_reset(&pid_pit,
-                  95.0, 0.9, 750.0); //
+                  90.0, 0.9, 750.0); //
   pid_reset(&pid_pit_speed,
-                  17, 0.01, 5);
+                  16, 0.01, 3);
 	pid_reset(&pid_pit_auto,
 									0.1,0.05,0.0);
 	
@@ -534,9 +535,9 @@ void pid_reset_manual(void){
 void pid_reset_auto(void){
 		  /* 云台pitch轴电机PID参数重置 */
   pid_reset(&pid_pit,
-                  95.0, 0.9, 750.0); //
+                  90.0, 0.9, 750.0); //
   pid_reset(&pid_pit_speed,
-                  17, 0.01, 5);
+                  16, 0.01, 3);
 	pid_reset(&pid_pit_auto,
 									0.1,0.05,0.0);
 	

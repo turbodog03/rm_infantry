@@ -6,7 +6,8 @@
 
 /*************************发射速度设置*******************************/
 #define SHOT_FRIC_WHEEL_SPEED    7000 //最大为2500
-
+#define SHOT_SUCCESS_FRIC_WHEEL_SPEED  6800  //发射成功摩擦轮会减速
+#define SHOT_ABLE_FRIC_WHEEL_SPEED  6000
 #define SHOOT_PERIOD 10
 /* 单发拨弹的编码器行程 */
 #define DEGREE_60_TO_ENCODER  49146

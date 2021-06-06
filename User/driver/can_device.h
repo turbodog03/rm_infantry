@@ -88,6 +88,7 @@ extern moto_measure_t moto_trigger;
 extern moto_measure_t moto_test;
 extern moto_measure_t moto_shoot[2];//0左，1右；
 extern float PowerData[4];
+extern int shoot_status;
 /**
   * @brief     CAN1 中断回调函数，在程序初始化时注册
   * @param     recv_id: CAN1 接收到的数据 ID

@@ -155,17 +155,7 @@ void cap_control(){
 	}
 }
 
-//void auto_shoot_control(){
-//		if(!auto_shoot_ok){
-//			if(data_recv.shootCommand == 1){
-//				auto_shoot_cmd = 1;
-//				auto_shoot_ok = 1;
-//			}
-//		}
-//		else{
-//			auto_shoot_cmd = 0;				
-//	}
-//}
+
 void auto_shoot_control(){
 	if(data_recv.shootCommand == 1){
 		if(auto_shoot_ok){
