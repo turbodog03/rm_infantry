@@ -48,6 +48,9 @@ moto_measure_t moto_test;
 float PowerData[4];
 //发射状态，平时为0，每成功发射一发跳变一次
 int shoot_status = 0;
+int last_state = 0;
+int shoot_cnt = 0;
+int last_cnt = 0;
 
 /**
   * @brief     CAN1 中断回调函数，在程序初始化时注册
@@ -124,13 +127,18 @@ void can2_recv_callback(uint32_t recv_id, uint8_t data[])
     {
       moto_shoot[0].msg_cnt++ <= 50 ? get_moto_offset(&moto_shoot[0], data) : \
       encoder_data_handle(&moto_shoot[0], data);
-			//通过转速变化判断是否有子弹射出
+			//通过转速变化判断是否有子弹射出,同时计算射出数量
+			last_state = shoot_status;
 			if(-moto_shoot[0].speed_rpm < SHOT_SUCCESS_FRIC_WHEEL_SPEED && -moto_shoot[0].speed_rpm > SHOT_ABLE_FRIC_WHEEL_SPEED){
 				shoot_status = 1;
 			}
 			else{
 				shoot_status = 0;
 			}
+			if(last_state == 0 && shoot_status == 1){
+				shoot_cnt++;
+			}
+
       err_detector_hook(AMMO_BOOSTER1_OFFLINE);
     }
     break;
@@ -323,4 +331,4 @@ void PowerDataResolve(uint8_t data[])
 	PowerData[2]=(float)pPowerData[2]/100.f;//输入电流
 	PowerData[3]=(float)pPowerData[3]/100.f;//设定功率
 }
-	
+

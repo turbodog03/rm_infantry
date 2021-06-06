@@ -90,35 +90,18 @@ void shoot_task(const void* argu)
 		/* bullet single or continue trigger command control  */
 		{
 			if ( RC_SINGLE_TRIG                  //遥控器单发
-				|| (rc.mouse.l && shoot_state==dont_shoot) || (auto_shoot_cmd && shoot_state==dont_shoot) ) //鼠标单发
+				|| (rc.mouse.l && shoot_state==dont_shoot) || (auto_shoot_cmd && shoot_state==dont_shoot) ) //鼠标单发  //自瞄单发
 			{
-				shoot_cmd=1;
-				continue_shoot_time = HAL_GetTick();
-				if(rc.kb.bit.SHIFT)
-					shoot_state=trible_shoot;
-				else
+					//shoot_cmd=1;
 					shoot_state=single_shoot;
-			}
-			else if ( RC_CONTIN_TRIG             //遥控器连发
-				|| rc.mouse.r ) //鼠标连发
-			{
-				shoot_state=continuous_shoot;
-				trigger_moto_position_ref=moto_trigger.total_ecd;
-			}
-			else if(HAL_GetTick()-continue_shoot_time>500)
-				shoot_state=dont_shoot;
-			
-//			if ( EXIT_CONTIN_TRIG               //退出连发处理
-//				|| ((km.rk_sta == KEY_RELEASE) && (last_right_key == KEY_PRESS_LONG)) )
-//			{
-//				trigger_moto_position_ref = moto_trigger.total_ecd;
-//			}
-			
+					last_cnt = shoot_cnt;				//last_cnt为此次准备发射前的cnt。只有shoot_cnt>last_cnt，才说明射出去了子弹   //cnt不是实际射出的子弹数量，而是摩擦轮转速突变次数，待优化
+
 			if (fric_wheel_run == 0)
 			{
 				shoot_state=dont_shoot;
 			}
 		}
+	}
 
 
 		/* 单发连发射击实现函数 */
@@ -170,3 +153,4 @@ void auto_shoot_control(){
 		auto_shoot_ok = 0;
 	}
 }
+

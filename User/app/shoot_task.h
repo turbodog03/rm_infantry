@@ -20,7 +20,7 @@
 #define TRIGGER_MOTOR_SPEED      1500 //
 
 void shoot_task(const void* argu);
-void auto_shoot_control();
+void auto_shoot_control(void);
 enum SHOOT_STATE
 {
 	single_shoot,
