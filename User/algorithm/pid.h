@@ -59,6 +59,9 @@ typedef struct
   float iout; 
   float dout; 
 
+	/*上一次的d输出值*/
+	float last_dout;
+	
   /* pid公式计算出的总输出 */
   float out;
 
@@ -67,6 +70,9 @@ typedef struct
   
   /* pid积分输出项限幅 */
   uint32_t integral_limit;
+	
+	/*滤波比率*/
+	float filtering_rate;
  
 } pid_t;
 
@@ -97,6 +103,36 @@ void pid_reset(pid_t *pid, float kp, float ki, float kd);
 float pid_calc(pid_t *pid, float get, float set);
 
 
+/**
+  * @brief     PID 初始化函数
+  * @param[in] pid: PID 结构体
+  * @param[in] max_out: 最大输出
+  * @param[in] intergral_limit: 积分限幅
+  * @param[in] kp/ki/kd: 具体 PID 参数
+  */
+	
+	
+/******************************************自定义的给d加了一阶低通滤波的pid算法******************************/
+void pid_init_new(pid_t *pid, uint32_t max_out, uint32_t intergral_limit, \
+              float kp, float ki, float kd, float filtering_rate);
+
+/**
+  * @brief     PID 参数复位函数
+  * @param[in] pid: PID 结构体
+  * @param[in] kp/ki/kd: 具体 PID 参数
+  */
+void pid_reset_new(pid_t *pid, float kp, float ki, float kd);
+
+/**
+  * @brief     给d加了一阶低通滤波的PID 计算函数，使用位置式 PID 计算
+  * @param[in] pid: PID 结构体
+  * @param[in] get: 反馈数据
+  * @param[in] set: 目标数据
+	* @param[in] last_dout 指向存放上一次d输出的值的位置的指针
+  * @retval    PID 计算输出
+  */
+float pid_calc_new(pid_t *pid, float get, float set);
+
 //云台电机 PID 结构体定义
 extern pid_t pid_pit;
 extern pid_t pid_yaw;
@@ -113,4 +149,6 @@ extern pid_t pid_trigger_speed;
 //摩擦轮电机 PID 结构体定义
 extern pid_t pid_shoot_left;
 extern pid_t pid_shoot_right;
+
+
 #endif

@@ -47,6 +47,7 @@ float pit_speed_ref;
 int16_t yaw_moto_current;
 int16_t pit_moto_current;
 
+
 /* 云台控制信号获取，将输入信号积分成云台的角度degree */
 void gimbal_yaw_control(void)
 {
@@ -81,11 +82,13 @@ void gimbal_custom_control(void)
   /* pitch轴预期速度计算，单位degree/s */
   pit_speed_ref    = pid_calc(&pid_pit, pit_angle_fdb, pit_angle_ref);    //degree
   /* pitch轴电机电压计算 */
-	
-  pit_moto_current = pid_calc(&pid_pit_speed, imu.gyro_y, pit_speed_ref); //degree/s
+
+	pit_moto_current = pid_calc(&pid_pit_speed, imu.gyro_y, pit_speed_ref); //degree/s
 	//滤波
 	pit_moto_current = 0.5*last_current + 0.5*pit_moto_current;
 	last_current = pit_moto_current;
+
+
   //发送电流到云台电机电调
   send_gimbal_moto_current(yaw_moto_current, pit_moto_current);
 	
@@ -104,11 +107,12 @@ void gimbal_auto_control()
 			color_flag=0;
 	}
 //	HAL_GPIO_TogglePin(GPIOG,GPIO_PIN_2);
-	a	=	data_recv.yaw_angle		*	0.2+(1-0.2)*last_y;
+//	a	=	data_recv.yaw_angle		*	0.2+(1-0.2)*last_y;
 //	b	=	data_recv.pitch_angle	*	rate+(1-rate)*last_p;
-	pit_angle_ref=pid_calc(&pid_pit_auto,data_recv.pitch_angle,0);
+//	pit_angle_ref=pid_calc(&pid_pit_auto,data_recv.pitch_angle,0);
 //	yaw_angle_ref=pid_calc(&pid_yaw_auto,data_recv.yaw_angle,0);
-	yaw_angle_ref=yaw_relative_angle+a;
+	pit_angle_ref=data_recv.pitchAngleSet;
+	yaw_angle_ref=data_recv.yawAngleSet;
 	gimbal_yaw_control();
 	//gimbal_pitch_control();
 	//pit_angle_ref=pit_relative_angle+b;
@@ -122,8 +126,8 @@ void gimbal_auto_control()
 	{
 		VAL_LIMIT(yaw_angle_ref, -170, 170);
 	}
-	last_p=data_recv.pitch_angle;
-	last_y=data_recv.yaw_angle;
+	last_p=data_recv.pitchAngleSet;
+	last_y=data_recv.yawAngleSet;
 	//计算pitch轴相对角度差
 	pit_angle_fdb = pit_relative_angle;
 	//计算yaw轴相对角度差

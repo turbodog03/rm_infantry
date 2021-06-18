@@ -127,10 +127,11 @@ void nuc_uart_callback(void);
 void referee_uart_callback(void);
 
 extern rc_type_t rc;
-extern frame_recv data_recv;
+extern recv_frame data_recv;
 extern char print_buf[];
 extern uint8_t   dbus_recv[];
 extern uint8_t   bluetooth_recv[];
 extern uint8_t   nuc_recv[];
 extern uint8_t	 referee_recv[];
+extern recv_frame data_recv;
 #endif

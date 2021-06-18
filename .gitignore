@@ -1,0 +1,7 @@
+*.[oa]
+
+/Project/
+
+!/Project/rm_infantry.uvprojx
+
+!!/Project/crc16.c

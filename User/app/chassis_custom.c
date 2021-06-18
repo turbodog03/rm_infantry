@@ -55,6 +55,7 @@ void chassis_control_information_get(void)
   //遥控器以及鼠标对底盘的控制信息转化为标准单位，平移为(mm/s)旋转为(degree/s)
   chassis.vx = rc.ch1 * CHASSIS_RC_MOVE_RATIO_X / RC_MAX_VALUE * MAX_CHASSIS_VX_SPEED + km.vx * CHASSIS_PC_MOVE_RATIO_X;
   chassis.vy = rc.ch2 * CHASSIS_RC_MOVE_RATIO_Y / RC_MAX_VALUE * MAX_CHASSIS_VY_SPEED + km.vy * CHASSIS_PC_MOVE_RATIO_Y;
+	
   chassis.vw = rc.ch3 * CHASSIS_RC_MOVE_RATIO_R / RC_MAX_VALUE * MAX_CHASSIS_VR_SPEED + rc.mouse.x * CHASSIS_PC_MOVE_RATIO_R;
 }
 
@@ -97,17 +98,17 @@ void chassis_moto_speed_calc(float vx, float vy, float vw, int16_t speed[])
   int16_t wheel_rpm[4];
   float max = 0;
 	
-#ifdef SPEED_LIMIT
+
 	//限制底盘各方向速度
   VAL_LIMIT(vx, -MAX_CHASSIS_VX_SPEED, MAX_CHASSIS_VX_SPEED);  //mm/s
   VAL_LIMIT(vy, -MAX_CHASSIS_VY_SPEED, MAX_CHASSIS_VY_SPEED);  //mm/s
   VAL_LIMIT(vw, -MAX_CHASSIS_VR_SPEED, MAX_CHASSIS_VR_SPEED);  //deg/s
-#endif
+
   wheel_rpm[0] = (+vx - vy + vw * rotate_ratio_f) * wheel_rpm_ratio;
   wheel_rpm[1] = (+vx + vy + vw * rotate_ratio_f) * wheel_rpm_ratio;
   wheel_rpm[2] = (-vx + vy + vw * rotate_ratio_b) * wheel_rpm_ratio;
   wheel_rpm[3] = (-vx - vy + vw * rotate_ratio_b) * wheel_rpm_ratio;
-#ifdef SPEED_LIMIT
+
   //限制每个轮的转速，找出最大值
   for (uint8_t i = 0; i < 4; i++)
   {
@@ -122,7 +123,7 @@ void chassis_moto_speed_calc(float vx, float vy, float vw, int16_t speed[])
     for (uint8_t i = 0; i < 4; i++)
       wheel_rpm[i] *= rate;
   }
-#endif
+
 #ifdef POWER_CONTORL
 	//功率限制
 	//按缓冲功率减小的程度给每个轮的速度乘以相同比例

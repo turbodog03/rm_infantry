@@ -90,34 +90,31 @@ typedef struct
 
   float ecd_offset_angle;  //云台初始编码器值
   float yaw_offset_angle;  //云台初始 yaw 轴角度
+	float pit_offset_angle;  //云台初始 yaw 轴角度
 } gimbal_yaw_t;
 
 //自瞄发送结构体
 typedef __packed struct
 {
-	uint8_t head;
-	float yaw_angle;
-	uint8_t yaw_angle_sign;
-	float pitch_angle;
-	uint8_t pitch_angle_sign;
-	uint8_t shoot_speed_grade; //0:13m/s;1:22m/s;2:20m/s;3:28m/s
-	uint8_t buff_flag;
-	uint8_t tail;
-} frame_send;
+	  uint16_t head;					//帧头
+    float pitchAngleGet;    //pitch??????
+    float yawAngleGet;      //yaw??????
+    uint8_t rotateDricetion;   //旋转方向
+    float timeBais;         //预测时间偏置
+    float compensateBais;   //弹道补偿偏置
+		int shootStatusGet;
+}send_frame;
+
 
 //自瞄接收结构体
-typedef __packed struct
+typedef __packed struct 
 {
-	uint8_t head;
-  float pitch_angle;
-	uint8_t pitch_angle_sign;
-	float yaw_angle;
-	uint8_t yaw_angle_sign;
-	uint8_t armor_flag;
-	uint8_t distance;					//当前与目标间距离，以分米为单位，并舍弃小数
-	uint8_t shoot_flag;				//是否发射弹丸，0代表否，1代表是
-	uint16_t crc_16;
-} frame_recv;
+    uint16_t head;  				 //帧头
+    float pitchAngleSet;    //pitch轴角度设定值
+    float yawAngleSet;      //yaw轴角度设定值
+    float targetAngle;      //目标装甲板角度
+    uint8_t shootCommand;   //发射指令
+}recv_frame;
 
 extern gimbal_yaw_t gim;
 extern imu_t        imu;

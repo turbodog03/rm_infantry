@@ -55,11 +55,11 @@ extern int32_t  trigger_moto_position_ref; //拨弹电机位置目标值
 float speedInNumsPerSec;
 uint32_t numsOfOneShot;
 uint32_t delayTimeInMs;
-
 /* 卡弹处理 */
 uint32_t stall_count = 0;
 uint32_t stall_inv_count = 0;
 uint8_t  stall_f = 0;
+
 void block_bullet_handle(void)
 {
   if (pid_trigger_speed.out <= -5000)  //卡弹电流
@@ -127,40 +127,32 @@ float ShootAndDelay(float speedInNumsPerSec, uint32_t numsOfOneShot, uint32_t de
 /* 子弹的单发和连发处理 */
 void shoot_custom_control(void)
 {
+	
   if (fric_wheel_run)
-  {
+  {		
+		
 		switch(shoot_state)
 		{
 			case single_shoot:
-				if(shoot_cmd)
+//				if(shoot_cmd)
+//				{
+//				  shoot_cmd=0;										
+//				}
+				trigger_moto_speed_ref = -800;		//让拨弹轮匀速转起来
+				if(shoot_cnt > last_cnt)					//射出去了一发
 				{
-				/* 如果是单发命令，拨轮旋转45度 */
-					trigger_moto_position_ref = moto_trigger.total_ecd + DEGREE_45_TO_ENCODER;
-					shoot_cmd=0;
-				}
-				/* 闭环计算拨弹电机期望转速 */
-					trigger_moto_speed_ref = pid_calc(&pid_trigger, moto_trigger.total_ecd, trigger_moto_position_ref);
+					shoot_state = dont_shoot;
+					trigger_moto_speed_ref = 0;			
+				}				
 				goto emmm;
-			case trible_shoot:
-				if(shoot_cmd)
-				{
-				/* 如果是三发命令，拨轮旋转3*45度 */
-					trigger_moto_position_ref = moto_trigger.total_ecd + 3*DEGREE_45_TO_ENCODER;
-					shoot_cmd=0;
-				}
-				/* 闭环计算拨弹电机期望转速 */
-					trigger_moto_speed_ref = pid_calc(&pid_trigger, moto_trigger.total_ecd, trigger_moto_position_ref);
-				goto emmm;
-			case continuous_shoot:
-				speedInNumsPerSec=8.0f;
-			  numsOfOneShot=8;
-				delayTimeInMs=10;
-				break;
+
 			case dont_shoot:
 				trigger_moto_speed_ref = 0;
 				goto emmm;
+			
 		}
-		trigger_moto_speed_ref=-ShootAndDelay(speedInNumsPerSec,numsOfOneShot,delayTimeInMs);
+		
+//		trigger_moto_speed_ref=-ShootAndDelay(speedInNumsPerSec,numsOfOneShot,delayTimeInMs);
     block_bullet_handle();                                 //卡弹处理
     /* 闭环计算拨弹电机电流 */
 		emmm:
@@ -175,7 +167,7 @@ void shoot_custom_control(void)
 	shoot_moto_current_right = pid_calc(&pid_shoot_right, moto_shoot[1].speed_rpm, fric_wheel_speed);
 	/* 发送拨弹电机、摩擦轮电机电流 */
 	send_shoot_moto_current(shoot_moto_current_left,shoot_moto_current_right,trigger_moto_current);
-
+	
 }
 
 /* 开关摩擦轮处理 */

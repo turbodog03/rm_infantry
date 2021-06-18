@@ -6,13 +6,19 @@
 #include "keyboard.h"
 #include "detect_task.h"
 #include "stdlib.h"
+#include "uart_device.h"
 
 extern void turn_on_off_friction_wheel(void);
+void cap_control(void);
+void auto_shoot_control(void);
 extern int16_t trigger_moto_speed_ref;
 extern int32_t  trigger_moto_position_ref; //拨弹电机位置目标值
 extern char mmp_buf[20];
 void shoot_custom_control(void);
-
+int cap_open_flag = 0;
+int cap_ok = 0;
+int auto_shoot_cmd = 0;
+int auto_shoot_ok = 1;
 
 /* 射击任务相关参数 */
 enum SHOOT_STATE shoot_state; 
@@ -44,8 +50,8 @@ void shoot_task(const void* argu)
   pid_init(&pid_trigger, 4000, 2000, 0.15f, 0, 0);
   pid_init(&pid_trigger_speed, 9000, 4000, 1.5, 0.05, 0);
 	/* 摩擦轮电机PID参数初始化 */
-	pid_init(&pid_shoot_left, 7000, 3000, 3.0f, 0.1, 0.0);
-	pid_init(&pid_shoot_right, 7000, 3000, 3.0f, 0.1, 0.0);
+	pid_init(&pid_shoot_left, 7000, 3000, 20.0f, 0.2, 0.0);
+	pid_init(&pid_shoot_right, 7000, 3000,20.0f, 0.2, 0.0);
 	uint32_t shoot_wake_time = osKernelSysTick();
 	while(1)
 	{
@@ -64,7 +70,19 @@ void shoot_task(const void* argu)
 
 		if (glb_err.err_list[REMOTE_CTRL_OFFLINE].err_exist)
 			fric_wheel_run = 0;
-
+		//开关弹仓盖
+		if (rc.kb.bit.R){
+			cap_open_flag = -1;
+			cap_ok = 0;
+		}
+		if (rc.kb.bit.R &&rc.kb.bit.SHIFT){
+			cap_open_flag = 1;
+			cap_ok = 0;
+		}
+		
+		/*自动射击实现判断逻辑*/
+		auto_shoot_control();
+			
 		
 		/* 开关摩擦轮实现函数 */
 		turn_on_off_friction_wheel();
@@ -72,40 +90,23 @@ void shoot_task(const void* argu)
 		/* bullet single or continue trigger command control  */
 		{
 			if ( RC_SINGLE_TRIG                  //遥控器单发
-				|| (rc.mouse.l && shoot_state==dont_shoot) ) //鼠标单发
+				|| (rc.mouse.l && shoot_state==dont_shoot) || (auto_shoot_cmd && shoot_state==dont_shoot) ) //鼠标单发  //自瞄单发
 			{
-				shoot_cmd=1;
-				continue_shoot_time = HAL_GetTick();
-				if(rc.kb.bit.SHIFT)
-					shoot_state=trible_shoot;
-				else
+					//shoot_cmd=1;
 					shoot_state=single_shoot;
-			}
-			else if ( RC_CONTIN_TRIG             //遥控器连发
-				|| rc.mouse.r ) //鼠标连发
-			{
-				shoot_state=continuous_shoot;
-				trigger_moto_position_ref=moto_trigger.total_ecd;
-			}
-			else if(HAL_GetTick()-continue_shoot_time>500)
-				shoot_state=dont_shoot;
-			
-//			if ( EXIT_CONTIN_TRIG               //退出连发处理
-//				|| ((km.rk_sta == KEY_RELEASE) && (last_right_key == KEY_PRESS_LONG)) )
-//			{
-//				trigger_moto_position_ref = moto_trigger.total_ecd;
-//			}
-			
+					last_cnt = shoot_cnt;				//last_cnt为此次准备发射前的cnt。只有shoot_cnt>last_cnt，才说明射出去了子弹   //cnt不是实际射出的子弹数量，而是摩擦轮转速突变次数，待优化
+
 			if (fric_wheel_run == 0)
 			{
 				shoot_state=dont_shoot;
 			}
 		}
+	}
 
 
 		/* 单发连发射击实现函数 */
 		shoot_custom_control();
-
+		cap_control();
 		
 		if(rc.sw1&&(last_sw1!=rc.sw1))
 		{
@@ -121,3 +122,35 @@ void shoot_task(const void* argu)
 		osDelayUntil(&shoot_wake_time, SHOOT_PERIOD);
 	}
 }
+
+
+
+void cap_control(){
+	if(!cap_ok){
+		if(cap_open_flag == 1){
+			set_pwm_param(1, 1000);
+		}
+		else{
+			set_pwm_param(1,2000);
+		}
+		start_pwm_output(1);
+		cap_ok = 1;
+	}
+}
+
+
+void auto_shoot_control(){
+	if(data_recv.shootCommand == 1){
+		if(auto_shoot_ok){
+			auto_shoot_cmd =0;
+		}
+		else{
+			auto_shoot_cmd = 1;
+			auto_shoot_ok = 1;
+		}
+	}
+	else{
+		auto_shoot_ok = 0;
+	}
+}
+

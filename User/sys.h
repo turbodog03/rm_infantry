@@ -118,7 +118,7 @@
 /******** 底盘最大速度设置 *******/
 /* 底盘移动最大速度，单位是毫米每秒 */
 #define MAX_CHASSIS_VX_SPEED 3000
-#define MAX_CHASSIS_VY_SPEED 8000
+#define MAX_CHASSIS_VY_SPEED 6000
 /* 底盘旋转最大速度，单位是度每秒 */
 #define MAX_CHASSIS_VR_SPEED 300
 
@@ -127,7 +127,7 @@
 /* yaw轴最小转角 */
 #define YAW_ANGLE_MIN        -80
 /* pitch轴最大仰角 */
-#define PIT_ANGLE_MAX        25
+#define PIT_ANGLE_MAX        36.5
 /* pitch轴最大俯角 */
 #define PIT_ANGLE_MIN        -22
 
@@ -137,7 +137,7 @@
 #define MAX_DMA_COUNT        	200
 #define DBUS_FRAME_SIZE      	18
 #define BLUETOOTH_FRAME_SIZE  20
-#define NUC_FRAME_SIZE  16
+#define NUC_FRAME_SIZE  15
 #define REFEREE_FRAME_SIZE 50
 
 /* 常用的一些物理系数 */

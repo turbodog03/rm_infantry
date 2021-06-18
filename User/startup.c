@@ -101,6 +101,10 @@ void init_setup(void)
   can_recv_callback_register(USER_CAN2, can2_recv_callback); 
   //开启CAN接收数据中断
   can_receive_start();
+	
+	//设置弹仓盖pwm定时器
+	set_pwm_group_param(1, 20000);
+	
 }
 
 

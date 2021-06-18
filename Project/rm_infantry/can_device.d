@@ -38,3 +38,19 @@
 .\rm_infantry\can_device.o: ..\Inc\hal_inc\stm32f4xx_hal_uart.h
 .\rm_infantry\can_device.o: ..\User\app\detect_task.h
 .\rm_infantry\can_device.o: ..\User\sys.h
+.\rm_infantry\can_device.o: ..\User\app\shoot_task.h
+.\rm_infantry\can_device.o: ..\Inc\os_inc\cmsis_os.h
+.\rm_infantry\can_device.o: ..\Inc\os_inc\FreeRTOS.h
+.\rm_infantry\can_device.o: D:\keil v5 core\ARM\ARMCC\Bin\..\include\stddef.h
+.\rm_infantry\can_device.o: ..\Inc\FreeRTOSConfig.h
+.\rm_infantry\can_device.o: ..\Inc\os_inc\projdefs.h
+.\rm_infantry\can_device.o: ..\Inc\os_inc\portable.h
+.\rm_infantry\can_device.o: ..\Inc\os_inc\deprecated_definitions.h
+.\rm_infantry\can_device.o: ..\Inc\os_inc\portmacro.h
+.\rm_infantry\can_device.o: ..\Inc\os_inc\mpu_wrappers.h
+.\rm_infantry\can_device.o: ..\Inc\os_inc\task.h
+.\rm_infantry\can_device.o: ..\Inc\os_inc\list.h
+.\rm_infantry\can_device.o: ..\Inc\os_inc\timers.h
+.\rm_infantry\can_device.o: ..\Inc\os_inc\queue.h
+.\rm_infantry\can_device.o: ..\Inc\os_inc\semphr.h
+.\rm_infantry\can_device.o: ..\Inc\os_inc\event_groups.h

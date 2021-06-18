@@ -35,6 +35,8 @@
 #include "servo_task.h"
 
 #include "can_device.h"
+
+#include "gimbal_task.h"
 #define DEBUG
 //#define AUTO			//显示雷达ui
 #define SHOOT					//显示发射准星ui  //ui待修正
@@ -110,14 +112,14 @@ void referee_usart_task(void const * argument)
 		
 
 		
-		Circle_Draw(&circle,"001",UI_Graph_ADD,9,UI_Color_Black,8,960,540,300);
-//		Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,8,960,540,1260,540);			
+		Circle_Draw(&circle,"001",UI_Graph_ADD,9,UI_Color_Black,4,960,540,300);
+//		Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,4,960,540,1260,540);			
 #ifdef SHOOT
-		Line_Draw(&line1,"003",UI_Graph_ADD,7,UI_Color_Black,4,910,540,1010,540);
-		Line_Draw(&line2,"004",UI_Graph_ADD,7,UI_Color_Black,4,930,500,990,500);
-		Line_Draw(&line3,"005",UI_Graph_ADD,7,UI_Color_Black,4,950,460,970,460);
-		Line_Draw(&line4,"006",UI_Graph_ADD,7,UI_Color_Black,4,960,540,960,440);
-		Line_Draw(&line5,"007",UI_Graph_ADD,7,UI_Color_Black,4,955,420,950,420);
+		Line_Draw(&line1,"003",UI_Graph_ADD,7,UI_Color_Black,2,910,540,1010,540);
+		Line_Draw(&line2,"004",UI_Graph_ADD,7,UI_Color_Black,2,930,500,990,500);
+		Line_Draw(&line3,"005",UI_Graph_ADD,7,UI_Color_Black,2,950,460,970,460);
+		Line_Draw(&line4,"006",UI_Graph_ADD,7,UI_Color_Black,2,960,540,960,440);
+		Line_Draw(&line5,"007",UI_Graph_ADD,7,UI_Color_Black,2,955,420,965,420);
 
 		//瞄准线
 #endif
@@ -152,7 +154,7 @@ void referee_usart_task(void const * argument)
 #endif
 #ifdef AUTO
 				if(i == 15 ){
-					Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,8,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);			
+					Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,4,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);			
 					UI_ReFresh(2,circle,line);
 				}
 					if(i == 30){
@@ -162,7 +164,7 @@ void referee_usart_task(void const * argument)
 						}
 					angle++;						
 //					
-					Line_Draw(&line,"002",UI_Graph_Change,8,UI_Color_Black,8,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);			
+					Line_Draw(&line,"002",UI_Graph_Change,8,UI_Color_Black,2,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);			
 //					//sin()、cos()的参数是弧度，角度转弧度
 					UI_ReFresh(1,line);
 					//更新线的位置
@@ -173,15 +175,13 @@ void referee_usart_task(void const * argument)
 				sendSuperCap();//给电容发功率
 				i=0;
 				}
+				//通过if调整发送ui数据的频率
 #ifdef DEBUG
-//				//通过if调整发送ui数据的频率
-				float a[8] = {pid_pit_speed.p,pid_pit_speed.i,pid_pit_speed.d,pid_pit.p,pid_pit.i,pid_pit.d,pit_angle_ref,pit_angle_fdb};
-//				float a[5] = {pid_pit_speed.p,pid_pit_speed.i,pid_pit_speed.d,pit_angle_ref,pit_angle_fdb};				
-				write_uart(BLUETOOTH_UART,(uint8_t*)a,sizeof(a));
-
-//				float b[3] = {pid_pit.p,pid_pit.i,pid_pit.d};
-//				write_uart(BLUETOOTH_UART,(uint8_t*)b,sizeof(b));
-				
+				//调用蓝牙串口的发送来debug
+				//float a[9] = {pid_pit_speed.p,pid_pit_speed.i,pid_pit_speed.d,pid_pit.p,pid_pit.i,pid_pit.d,pit_angle_ref,pit_angle_fdb, pid_pit_speed.dout};	
+				float a[3] = {(float)moto_shoot[0].speed_rpm, shoot_cnt, shoot_status};
+				//float a[4] = {moto_trigger.ecd, moto_trigger.total_ecd, moto_trigger.round_cnt, gim.ctrl_mode} ;
+				write_uart(BLUETOOTH_UART,(uint8_t*)a,sizeof(a));				
 				uint8_t tail[]={0x00,0x00,0x80,0x7f};
 				write_uart(BLUETOOTH_UART,tail,sizeof(tail));
 #endif
