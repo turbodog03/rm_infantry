@@ -1,7 +1,6 @@
 *.[oa]
 
-Project/
+Project/rm_infantry
 
-!/Project/rm_infantry.uvprojx
+Project/Output
 
-!!/Project/crc16.c
