@@ -49,6 +49,7 @@ float PowerData[4];
 //发射状态，平时为0，每成功发射一发跳变一次
 int shoot_status = 0;
 int last_state = 0;
+//用于使用摩擦轮速度突变判断是否射出子弹
 int shoot_cnt = 0;
 int last_cnt = 0;
 
@@ -129,6 +130,7 @@ void can2_recv_callback(uint32_t recv_id, uint8_t data[])
       encoder_data_handle(&moto_shoot[0], data);
 			//通过转速变化判断是否有子弹射出,同时计算射出数量
 			last_state = shoot_status;
+			//判断是否产生转速突变
 			if(-moto_shoot[0].speed_rpm < SHOT_SUCCESS_FRIC_WHEEL_SPEED && -moto_shoot[0].speed_rpm > SHOT_ABLE_FRIC_WHEEL_SPEED){
 				shoot_status = 1;
 			}

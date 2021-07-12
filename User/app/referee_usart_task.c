@@ -37,9 +37,10 @@
 #include "can_device.h"
 
 #include "gimbal_task.h"
-#define DEBUG
+#include "UIPrint.h"
+//#define DEBUG
 //#define AUTO			//显示雷达ui
-#define SHOOT					//显示发射准星ui  //ui待修正
+//#define SHOOT					//显示发射准星ui  //ui待修正
 
 #define PI acos(-1)
 /**
@@ -68,7 +69,7 @@ unpack_data_t referee_unpack_obj;
 float power_buffer;//底盘功率缓冲值
 float chassis_power; //底盘实时功率
 
-char test = 1;
+
 
 /**
   * @brief          referee task
@@ -82,14 +83,20 @@ char test = 1;
   */
 void referee_usart_task(void const * argument)
 {
+	char mmp[30];
+	graphic_data_struct_t PredictData;
+	graphic_data_struct_t PredictCircle;
+	ext_client_custom_character_t string1;
+	graphic_data_struct_t linetest;
+	memset(&string1,0,sizeof(string1));
+  
+	DrawFullCircle(&PredictCircle,"001",1,7,7,4,960,540,300);
+	
 #ifndef DEBUG
     init_referee_struct_data();
     fifo_s_init(&referee_fifo, referee_fifo_buf, REFEREE_FIFO_BUF_LENGTH);
     usart6_init(usart6_buf[0], usart6_buf[1], USART_RX_BUF_LENGHT);
 #endif
-		//雷达
-		Graph_Data circle;
-		Graph_Data line;
 #ifdef SHOOT			
 		Graph_Data line1;
 		Graph_Data line2;
@@ -98,10 +105,6 @@ void referee_usart_task(void const * argument)
 		Graph_Data line5;
 
 #endif
-
-		memset(&circle,0,sizeof(circle));
-		memset(&line,0,sizeof(line));
-
 	#ifdef SHOOT	
 		memset(&line1,0,sizeof(line1));
 		memset(&line2,0,sizeof(line2));
@@ -112,7 +115,7 @@ void referee_usart_task(void const * argument)
 		
 
 		
-		Circle_Draw(&circle,"001",UI_Graph_ADD,9,UI_Color_Black,4,960,540,300);
+		//Circle_Draw(&circle,"001",UI_Graph_ADD,9,UI_Color_Black,4,960,540,300);
 //		Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,4,960,540,1260,540);			
 #ifdef SHOOT
 		Line_Draw(&line1,"003",UI_Graph_ADD,7,UI_Color_Black,2,910,540,1010,540);
@@ -123,13 +126,13 @@ void referee_usart_task(void const * argument)
 
 		//瞄准线
 #endif
-		
+		static int  i =  0;
 		double angle = 0;
 		uint32_t referee_wake_time = osKernelSysTick();
-			
-
     while(1)
-    {					
+    {			
+				i++;
+			get_chassis_power_and_buffer(&chassis_power,&power_buffer);
 #ifndef DEBUG
 				referee_unpack_fifo_data();
 				get_chassis_power_and_buffer(&chassis_power,&power_buffer);
@@ -138,8 +141,7 @@ void referee_usart_task(void const * argument)
 				uint8_t tail[]={0x00,0x00,0x80,0x7f};
 				write_uart(BLUETOOTH_UART,tail,sizeof(tail));
 #endif
-				static int  i =  0;
-				i++;
+				
 #ifdef SHOOT				
 				if(i ==10){
 				UI_ReFresh(2,line1,line2);
@@ -154,26 +156,62 @@ void referee_usart_task(void const * argument)
 #endif
 #ifdef AUTO
 				if(i == 15 ){
-					Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,4,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);			
-					UI_ReFresh(2,circle,line);
+					DrawLine(&PredictData,"002",1,8,7,4,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);
+					
+					SendData(PredictData);
+					SendData(PredictCircle);
+					//Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,4,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);	
+				  //UI_ReFresh(2,circle,line);
 				}
 					if(i == 30){
 						if(angle == 360)
 						{
 							angle = 0;
 						}
-					angle++;						
-//					
-					Line_Draw(&line,"002",UI_Graph_Change,8,UI_Color_Black,2,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);			
-//					//sin()、cos()的参数是弧度，角度转弧度
-					UI_ReFresh(1,line);
+					angle++;		
+          SendPredictData(SendPredictData,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);							
+					//Line_Draw(&line,"002",UI_Graph_Change,8,UI_Color_Black,2,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);			
+          //sin()、cos()的参数是弧度，角度转弧度
+					//UI_ReFresh(1,line);
 					//更新线的位置
 				}
 #endif
-				if(i == 40) 
+				if(i == 15 ){
+					DrawLine(&PredictData,"002",1,8,7,4,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);
+					SendData(PredictData);
+					//Line_Draw(&line,"002",UI_Graph_ADD,8,UI_Color_Black,4,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);	
+				  //UI_ReFresh(2,circle,line);
+				}
+				if(i == 30){
+						if(angle == 360)
+						{
+							angle = 0;
+						}
+					angle++;		
+          DrawLine(&PredictData,"002",2,8,7,4,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);
+					SendData(PredictData);					
+					//Line_Draw(&line,"002",UI_Graph_Change,8,UI_Color_Black,2,960,540,sin(angle*PI/180)*300+960,cos(angle*PI/180)*300+540);			
+          //sin()、cos()的参数是弧度，角度转弧度
+					//UI_ReFresh(1,line);
+					//更新线的位置
+				}
+				if(i ==45){
+				sprintf(mmp,"buffer=%.2f voltage=%.2f",power_buffer,PowerData[1]);
+	      DrawString(&string1,"222",1,7,7,20,5,10,850,mmp);
+			  SendStringData(string1);
+				}
+				if(i==60){
+					SendData(PredictCircle);
+				}
+				if(i == 75) 
 				{	
 				sendSuperCap();//给电容发功率
 				i=0;
+				}
+				if(i ==90){
+			  sprintf(mmp,"buffer=%.2f voltage=%.2f",power_buffer,PowerData[1]);
+	      DrawString(&string1,"222",2,7,7,20,5,10,850,mmp);
+			  SendStringData(string1);
 				}
 				//通过if调整发送ui数据的频率
 #ifdef DEBUG
@@ -186,6 +224,7 @@ void referee_usart_task(void const * argument)
 				write_uart(BLUETOOTH_UART,tail,sizeof(tail));
 #endif
 				osDelayUntil(&referee_wake_time, 10);
+				
     }
 }
 

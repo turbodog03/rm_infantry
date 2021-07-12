@@ -50,7 +50,7 @@ extern int16_t  trigger_moto_speed_ref;    //拨弹电机速度目标值
 extern uint8_t  fric_wheel_run;            //摩擦轮开关
 extern uint16_t fric_wheel_speed;          //摩擦轮速度
 extern int32_t  trigger_moto_position_ref; //拨弹电机位置目标值
-
+uint8_t shoot_ready = 0;
 
 float speedInNumsPerSec;
 uint32_t numsOfOneShot;
@@ -132,31 +132,69 @@ void shoot_custom_control(void)
   {		
 		
 		switch(shoot_state)
-		{
-			case single_shoot:
-//				if(shoot_cmd)
+//		{
+//			case single_shoot:
+////				if(shoot_cmd)
+////				{
+////				  shoot_cmd=0;										
+////				}
+//				trigger_moto_speed_ref = -800;		//让拨弹轮匀速转起来
+//				if(shoot_cnt > last_cnt)					//射出去了一发
 //				{
-//				  shoot_cmd=0;										
-//				}
-				trigger_moto_speed_ref = -800;		//让拨弹轮匀速转起来
-				if(shoot_cnt > last_cnt)					//射出去了一发
-				{
-					shoot_state = dont_shoot;
-					trigger_moto_speed_ref = 0;			
-				}				
-				goto emmm;
+//					shoot_state = dont_shoot;
+//					trigger_moto_speed_ref = 0;			
+//				}				
+//				goto emmm;
 
+//			case dont_shoot:
+//				trigger_moto_speed_ref = 0;
+//				goto emmm;
+//			
+//		}
+					{
+			case single_shoot:
+				if(shoot_cmd)
+				{
+				/* 如果是单发命令，拨轮旋转45度 */
+					trigger_moto_position_ref = moto_trigger.total_ecd + DEGREE_45_TO_ENCODER;
+					shoot_cmd=0;
+				}
+				/* 闭环计算拨弹电机期望转速 */
+					trigger_moto_speed_ref = pid_calc(&pid_trigger, moto_trigger.total_ecd, trigger_moto_position_ref);
+				goto emmm;
+			case trible_shoot:
+				if(shoot_cmd)
+				{
+				/* 如果是三发命令，拨轮旋转3*45度 */
+					trigger_moto_position_ref = moto_trigger.total_ecd + 3*DEGREE_45_TO_ENCODER;
+					shoot_cmd=0;
+				}
+				/* 闭环计算拨弹电机期望转速 */
+					trigger_moto_speed_ref = pid_calc(&pid_trigger, moto_trigger.total_ecd, trigger_moto_position_ref);
+				goto emmm;
+			case continuous_shoot:
+				speedInNumsPerSec=8.0f;
+			  numsOfOneShot=8;
+				delayTimeInMs=10;
+				break;
 			case dont_shoot:
 				trigger_moto_speed_ref = 0;
 				goto emmm;
-			
 		}
 		
 //		trigger_moto_speed_ref=-ShootAndDelay(speedInNumsPerSec,numsOfOneShot,delayTimeInMs);
     block_bullet_handle();                                 //卡弹处理
     /* 闭环计算拨弹电机电流 */
 		emmm:
+		if((GPIOI->IDR & GPIO_PIN_9) != GPIO_PIN_SET){		//判断子弹是否置位，没置位先置位
+			shoot_ready = 0;
+			trigger_moto_speed_ref = 200;
+		}
+		else{
+			shoot_ready = 1;
+		}
     trigger_moto_current = pid_calc(&pid_trigger_speed, moto_trigger.speed_rpm, trigger_moto_speed_ref);
+			
   }
   else
   {

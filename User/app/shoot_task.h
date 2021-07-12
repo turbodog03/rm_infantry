@@ -31,6 +31,7 @@ enum SHOOT_STATE
 
 extern enum SHOOT_STATE shoot_state; 
 extern uint8_t shoot_cmd;
+extern uint8_t shoot_ready;
 
 #endif
 
